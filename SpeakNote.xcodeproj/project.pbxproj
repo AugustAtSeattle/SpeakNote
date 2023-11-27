@@ -1,0 +1,607 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2A2B1539AB0084679B /* AppDelegate.swift */; };
+		CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */; };
+		CC17DC2F2B1539AB0084679B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2E2B1539AB0084679B /* ViewController.swift */; };
+		CC17DC322B1539AB0084679B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC17DC302B1539AB0084679B /* Main.storyboard */; };
+		CC17DC342B1539AB0084679B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC17DC332B1539AB0084679B /* Assets.xcassets */; };
+		CC17DC372B1539AB0084679B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */; };
+		CC17DC422B1539AB0084679B /* SpeakNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC412B1539AB0084679B /* SpeakNoteTests.swift */; };
+		CC17DC4C2B1539AB0084679B /* SpeakNoteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */; };
+		CC17DC4E2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CC17DC3E2B1539AB0084679B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC17DC1F2B1539AB0084679B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC17DC262B1539AB0084679B;
+			remoteInfo = SpeakNote;
+		};
+		CC17DC482B1539AB0084679B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC17DC1F2B1539AB0084679B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC17DC262B1539AB0084679B;
+			remoteInfo = SpeakNote;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CC17DC272B1539AB0084679B /* SpeakNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC17DC2A2B1539AB0084679B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CC17DC2E2B1539AB0084679B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CC17DC312B1539AB0084679B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CC17DC332B1539AB0084679B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC17DC362B1539AB0084679B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CC17DC382B1539AB0084679B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC17DC3D2B1539AB0084679B /* SpeakNoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeakNoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC17DC412B1539AB0084679B /* SpeakNoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteTests.swift; sourceTree = "<group>"; };
+		CC17DC472B1539AB0084679B /* SpeakNoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeakNoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteUITests.swift; sourceTree = "<group>"; };
+		CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CC17DC242B1539AB0084679B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC17DC3A2B1539AB0084679B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC17DC442B1539AB0084679B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CC17DC1E2B1539AB0084679B = {
+			isa = PBXGroup;
+			children = (
+				CC17DC292B1539AB0084679B /* SpeakNote */,
+				CC17DC402B1539AB0084679B /* SpeakNoteTests */,
+				CC17DC4A2B1539AB0084679B /* SpeakNoteUITests */,
+				CC17DC282B1539AB0084679B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CC17DC282B1539AB0084679B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC272B1539AB0084679B /* SpeakNote.app */,
+				CC17DC3D2B1539AB0084679B /* SpeakNoteTests.xctest */,
+				CC17DC472B1539AB0084679B /* SpeakNoteUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC17DC292B1539AB0084679B /* SpeakNote */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC2A2B1539AB0084679B /* AppDelegate.swift */,
+				CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */,
+				CC17DC2E2B1539AB0084679B /* ViewController.swift */,
+				CC17DC302B1539AB0084679B /* Main.storyboard */,
+				CC17DC332B1539AB0084679B /* Assets.xcassets */,
+				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
+				CC17DC382B1539AB0084679B /* Info.plist */,
+			);
+			path = SpeakNote;
+			sourceTree = "<group>";
+		};
+		CC17DC402B1539AB0084679B /* SpeakNoteTests */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC412B1539AB0084679B /* SpeakNoteTests.swift */,
+			);
+			path = SpeakNoteTests;
+			sourceTree = "<group>";
+		};
+		CC17DC4A2B1539AB0084679B /* SpeakNoteUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */,
+				CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */,
+			);
+			path = SpeakNoteUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CC17DC262B1539AB0084679B /* SpeakNote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC17DC512B1539AB0084679B /* Build configuration list for PBXNativeTarget "SpeakNote" */;
+			buildPhases = (
+				CC17DC232B1539AB0084679B /* Sources */,
+				CC17DC242B1539AB0084679B /* Frameworks */,
+				CC17DC252B1539AB0084679B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpeakNote;
+			productName = SpeakNote;
+			productReference = CC17DC272B1539AB0084679B /* SpeakNote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC17DC3C2B1539AB0084679B /* SpeakNoteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC17DC542B1539AB0084679B /* Build configuration list for PBXNativeTarget "SpeakNoteTests" */;
+			buildPhases = (
+				CC17DC392B1539AB0084679B /* Sources */,
+				CC17DC3A2B1539AB0084679B /* Frameworks */,
+				CC17DC3B2B1539AB0084679B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC17DC3F2B1539AB0084679B /* PBXTargetDependency */,
+			);
+			name = SpeakNoteTests;
+			productName = SpeakNoteTests;
+			productReference = CC17DC3D2B1539AB0084679B /* SpeakNoteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CC17DC462B1539AB0084679B /* SpeakNoteUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC17DC572B1539AB0084679B /* Build configuration list for PBXNativeTarget "SpeakNoteUITests" */;
+			buildPhases = (
+				CC17DC432B1539AB0084679B /* Sources */,
+				CC17DC442B1539AB0084679B /* Frameworks */,
+				CC17DC452B1539AB0084679B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC17DC492B1539AB0084679B /* PBXTargetDependency */,
+			);
+			name = SpeakNoteUITests;
+			productName = SpeakNoteUITests;
+			productReference = CC17DC472B1539AB0084679B /* SpeakNoteUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CC17DC1F2B1539AB0084679B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					CC17DC262B1539AB0084679B = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					CC17DC3C2B1539AB0084679B = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = CC17DC262B1539AB0084679B;
+					};
+					CC17DC462B1539AB0084679B = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = CC17DC262B1539AB0084679B;
+					};
+				};
+			};
+			buildConfigurationList = CC17DC222B1539AB0084679B /* Build configuration list for PBXProject "SpeakNote" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CC17DC1E2B1539AB0084679B;
+			productRefGroup = CC17DC282B1539AB0084679B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC17DC262B1539AB0084679B /* SpeakNote */,
+				CC17DC3C2B1539AB0084679B /* SpeakNoteTests */,
+				CC17DC462B1539AB0084679B /* SpeakNoteUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC17DC252B1539AB0084679B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC17DC372B1539AB0084679B /* LaunchScreen.storyboard in Resources */,
+				CC17DC342B1539AB0084679B /* Assets.xcassets in Resources */,
+				CC17DC322B1539AB0084679B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC17DC3B2B1539AB0084679B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC17DC452B1539AB0084679B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC17DC232B1539AB0084679B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC17DC2F2B1539AB0084679B /* ViewController.swift in Sources */,
+				CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */,
+				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC17DC392B1539AB0084679B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC17DC422B1539AB0084679B /* SpeakNoteTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC17DC432B1539AB0084679B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC17DC4C2B1539AB0084679B /* SpeakNoteUITests.swift in Sources */,
+				CC17DC4E2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CC17DC3F2B1539AB0084679B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC17DC262B1539AB0084679B /* SpeakNote */;
+			targetProxy = CC17DC3E2B1539AB0084679B /* PBXContainerItemProxy */;
+		};
+		CC17DC492B1539AB0084679B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC17DC262B1539AB0084679B /* SpeakNote */;
+			targetProxy = CC17DC482B1539AB0084679B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CC17DC302B1539AB0084679B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC17DC312B1539AB0084679B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC17DC362B1539AB0084679B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CC17DC4F2B1539AB0084679B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CC17DC502B1539AB0084679B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CC17DC522B1539AB0084679B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27AF2HSKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpeakNote/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CC17DC532B1539AB0084679B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27AF2HSKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpeakNote/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CC17DC552B1539AB0084679B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27AF2HSKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNoteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpeakNote.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SpeakNote";
+			};
+			name = Debug;
+		};
+		CC17DC562B1539AB0084679B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27AF2HSKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNoteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpeakNote.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SpeakNote";
+			};
+			name = Release;
+		};
+		CC17DC582B1539AB0084679B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27AF2HSKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SpeakNote;
+			};
+			name = Debug;
+		};
+		CC17DC592B1539AB0084679B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27AF2HSKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SpeakNote;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CC17DC222B1539AB0084679B /* Build configuration list for PBXProject "SpeakNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC17DC4F2B1539AB0084679B /* Debug */,
+				CC17DC502B1539AB0084679B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC17DC512B1539AB0084679B /* Build configuration list for PBXNativeTarget "SpeakNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC17DC522B1539AB0084679B /* Debug */,
+				CC17DC532B1539AB0084679B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC17DC542B1539AB0084679B /* Build configuration list for PBXNativeTarget "SpeakNoteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC17DC552B1539AB0084679B /* Debug */,
+				CC17DC562B1539AB0084679B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC17DC572B1539AB0084679B /* Build configuration list for PBXNativeTarget "SpeakNoteUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC17DC582B1539AB0084679B /* Debug */,
+				CC17DC592B1539AB0084679B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CC17DC1F2B1539AB0084679B /* Project object */;
+}
