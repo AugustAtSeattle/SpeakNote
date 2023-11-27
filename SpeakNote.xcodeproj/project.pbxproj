@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2A2B1539AB0084679B /* AppDelegate.swift */; };
 		CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */; };
-		CC17DC2F2B1539AB0084679B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2E2B1539AB0084679B /* ViewController.swift */; };
+		CC17DC2F2B1539AB0084679B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC2E2B1539AB0084679B /* MainViewController.swift */; };
 		CC17DC322B1539AB0084679B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC17DC302B1539AB0084679B /* Main.storyboard */; };
 		CC17DC342B1539AB0084679B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC17DC332B1539AB0084679B /* Assets.xcassets */; };
 		CC17DC372B1539AB0084679B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */; };
 		CC17DC422B1539AB0084679B /* SpeakNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC412B1539AB0084679B /* SpeakNoteTests.swift */; };
 		CC17DC4C2B1539AB0084679B /* SpeakNoteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */; };
 		CC17DC4E2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */; };
+		CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC5A2B154B460084679B /* SpeechViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +40,7 @@
 		CC17DC272B1539AB0084679B /* SpeakNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC17DC2A2B1539AB0084679B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CC17DC2E2B1539AB0084679B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CC17DC2E2B1539AB0084679B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CC17DC312B1539AB0084679B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CC17DC332B1539AB0084679B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC17DC362B1539AB0084679B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +50,7 @@
 		CC17DC472B1539AB0084679B /* SpeakNoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeakNoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteUITests.swift; sourceTree = "<group>"; };
 		CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CC17DC5A2B154B460084679B /* SpeechViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +103,8 @@
 			children = (
 				CC17DC2A2B1539AB0084679B /* AppDelegate.swift */,
 				CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */,
-				CC17DC2E2B1539AB0084679B /* ViewController.swift */,
+				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
+				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
 				CC17DC302B1539AB0084679B /* Main.storyboard */,
 				CC17DC332B1539AB0084679B /* Assets.xcassets */,
 				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
@@ -258,7 +261,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC17DC2F2B1539AB0084679B /* ViewController.swift in Sources */,
+				CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */,
+				CC17DC2F2B1539AB0084679B /* MainViewController.swift in Sources */,
 				CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
 			);
