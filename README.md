@@ -23,7 +23,7 @@ _(Instructions on how to install or setup the project.)_
 We welcome contributions to the SpeakNote project. If you're interested in contributing, please read our contribution guidelines.
 
 ## License
-SpeakNote is released under the [MIT License](LICENSE). _(Or specify the license you've chosen.)_
+SpeakNote is released under the [MIT License](LICENSE). See `LICENSE` for details.
 
 ## Contact
 For feedback, questions, or collaboration, please contact me. You can also [file an issue].
