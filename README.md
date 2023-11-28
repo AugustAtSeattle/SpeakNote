@@ -17,6 +17,27 @@ SpeakNote is an innovative iOS application designed to revolutionize the way use
 - **Retrieving Notes**: Ask questions or give commands to retrieve your stored notes.
 - **Managing Notes**: Edit or delete notes through voice commands.
 
+## SpeakNote Workflows
+
+### Workflow 1: Basic Note-Taking
+1. The user speaks a note.
+2. The app sends the audio to Whisper for transcription.
+3. Whisper returns the transcribed text.
+4. The app sends this text to GPT for interpretation.
+5. GPT returns an SQL query (either insert or update).
+6. The app executes this SQL query in the local database.
+7. The database confirms that the note has been saved.
+8. Finally, the app displays a confirmation to the user.
+
+### Workflow 2: Basic Note-Remind
+1. The user speaks a question.
+2. The app sends the audio to Whisper for transcription.
+3. Whisper returns the transcribed text.
+4. The app sends this text to GPT for interpretation.
+6. it returns an SQL query (a seasch query).
+7. The app executes this SQL query in the local database.
+9. Finally, the app displays a search result to the user.
+
 ### Core Features for MVP
 - **Voice-Activated Note-Taking**: Users can speak to the app, and it transcribes their speech into text notes.
 - **Local Storage of Notes**: Notes are stored securely in the device's local storage.
