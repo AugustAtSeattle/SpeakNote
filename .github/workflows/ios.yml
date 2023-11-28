@@ -1,47 +1,28 @@
-name: iOS starter workflow
+name: iOS Build
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   build:
-    name: Build and Test default scheme using any available iPhone simulator
+    name: Build iOS project
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set Default Scheme
-        run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: List Available Simulators
-        run: xcrun simctl list devices available
-      - name: Build
-        env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
-          device: iPhone 8  # Replace with an available simulator
-          os: 14.4         # Replace with an available OS version
-        run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
-      - name: Test
-        env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
-          device: iPhone 8  # Replace with an available simulator
-          os: 14.4         # Replace with an available OS version
-        run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: 'latest' # Specify the Xcode version
+
+    - name: Select a Simulator
+      run: echo "SIMULATOR_UDID=$(xcrun simctl list devices available | grep 'iPhone 12' | awk -F ' - ' '{print $NF}' | head -1)" >> $GITHUB_ENV
+
+    - name: Build iOS project
+      run: |
+        xcodebuild build -project YourProjectName.xcodeproj \
+          -scheme YourSchemeName \
+          -sdk iphonesimulator \
+          -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
