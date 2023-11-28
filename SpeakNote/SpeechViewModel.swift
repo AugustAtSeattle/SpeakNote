@@ -7,95 +7,125 @@
 
 import Foundation
 import Speech
+import RxSwift
+import RxCocoa
 
 class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
+    private let disposeBag = DisposeBag()
+    
     private let speechRecognizer = SFSpeechRecognizer()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
 
-    
-    var isListeningChanged: ((Bool) -> Void)?
-
-    var isListening: Bool = false {
-        didSet {
-            isListeningChanged?(isListening)
-        }
+    // Relay for the listening state, initialized with `false`.
+    let isListeningRelay = BehaviorRelay<Bool>(value: false)
+    // Public computed property to get the current listening state.
+    var isListening: Bool {
+        return isListeningRelay.value
     }
     
-    var transcribedText: String = "" {
-        didSet {
-            transcribedTextChanged?(transcribedText)
+    let transcribedText = BehaviorRelay<String>(value: "")
+    
+    func toggleListening() {
+        let currentState = isListeningRelay.value
+        if currentState {
+            stopListening()
+        } else {
+            startListening()
         }
     }
-
-    var transcribedTextChanged: ((String) -> Void)?
 
     func startListening() {
-        // Check if already running a recognition task
-        if recognitionTask != nil {
-            recognitionTask?.cancel()
-            recognitionTask = nil
-        }
+        // Cancel any existing recognition task
+        cancelExistingRecognitionTask()
 
-        // Setup audio engine and speech recognizer
+        // Prepare audio engine
+        prepareAudioEngine()
+
+        // Configure and activate audio session
+        guard configureAudioSession() else { return }
+
+        // Setup and start the recognition task
+        setupAndStartRecognitionTask()
+
+        // Start audio engine
+        do {
+            try audioEngine.start()
+            isListeningRelay.accept(true)
+        } catch {
+            print("Error starting audio engine: \(error)")
+        }
+    }
+
+    private func cancelExistingRecognitionTask() {
+        recognitionTask?.cancel()
+        recognitionTask = nil
+    }
+
+    private func prepareAudioEngine() {
+        audioEngine.stop()
+        audioEngine.inputNode.removeTap(onBus: 0)
+    }
+
+    private func configureAudioSession() -> Bool {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            return true
         } catch {
-            // Handle the error here
+            print("Audio session configuration error: \(error)")
+            return false
         }
+    }
 
+    private func setupAndStartRecognitionTask() {
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-
-        let inputNode = audioEngine.inputNode
         guard let recognitionRequest = recognitionRequest else { return }
-
-        // Configure request here, like setting contextual strings, etc.
-
-        // Start the recognition task
-        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
+        let inputNode = audioEngine.inputNode
+        
+        recognitionRequest.shouldReportPartialResults = true
+        
+        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             if let result = result {
-                // Update your model with the results
-                self.transcribedText = result.bestTranscription.formattedString
+                self?.transcribedText.accept(result.bestTranscription.formattedString)
             } else if let error = error {
-                // Handle errors here
+                print("Recognition task error: \(error)")
             }
         }
 
-        // Setup and start the audio engine
         let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-            self.recognitionRequest?.append(buffer)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
+            self?.recognitionRequest?.append(buffer)
         }
-
-        audioEngine.prepare()
-        do {
-            try audioEngine.start()
-        } catch {
-            // Handle errors here
-        }
-
-        // Indicate that listening has started
-        isListening = true
     }
+
     
     func stopListening() {
         audioEngine.stop()
+        // Safely remove the tap on the inputNode.
+        audioEngine.inputNode.removeTap(onBus: 0)
         recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
-        recognitionTask = nil
-
-        // Reset audio session if necessary
+        
+        // Cancel the previous task if it's running.
+        if let recognitionTask = self.recognitionTask {
+            recognitionTask.cancel()
+            self.recognitionTask = nil
+        }
+        
+        // Reset the audio session.
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setActive(false)
+            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+            try audioSession.setCategory(.ambient) // Set the session category to ambient to deactivate recording setup.
         } catch {
-            // Handle errors here
+            // Handle the error more specifically if desired
+            print("Audio Session error: \(error)")
         }
-
-        isListening = false
+        
+        // Notify observers that listening has stopped.
+        isListeningRelay.accept(false)
     }
 
     
