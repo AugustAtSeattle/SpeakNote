@@ -7,14 +7,19 @@
 
 import UIKit
 import Speech
+import RxSwift
+import RxCocoa
 
 class MainViewController: UIViewController {
+    let disposeBag = DisposeBag()
+
     var textView = UITextView()
     var listenButton = UIButton()
     let viewModel = SpeechViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Setup textView and listenButton
         textView.isEditable = false
         textView.isSelectable = false
@@ -22,14 +27,16 @@ class MainViewController: UIViewController {
         textView.textAlignment = .center
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.text = "Press the button and start speaking"
+        
         // Add target to listenButton and swipe gesture recognizer
         listenButton.setTitle("Start Listening", for: .normal)
         listenButton.setTitleColor(.systemBlue, for: .normal)
         listenButton.translatesAutoresizingMaskIntoConstraints = false
-        listenButton.addTarget(self, action: #selector(toggleListening), for: .touchUpInside)
+        
         // Add textView and listenButton as subviews
         view.addSubview(textView)
         view.addSubview(listenButton)
+        
         // Setup constraints for textView and listenButton
         NSLayoutConstraint.activate([
             textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -43,29 +50,33 @@ class MainViewController: UIViewController {
         // Setup bindings
         setupBindings()
     }
-    
-    @objc func toggleListening() {
-        viewModel.isListening ? viewModel.stopListening() : viewModel.startListening()
-    }
-
 
     func setupBindings() {
-        // Bind ViewModel's transcribedText to textView's text
-        viewModel.transcribedTextChanged = { [weak self] newText in
-            DispatchQueue.main.async {
-                self?.textView.text = newText
-            }
-        }
+        listenButton.rx.tap
+            .bind(onNext: viewModel.toggleListening)
+            .disposed(by: disposeBag)
         
+        viewModel.transcribedText.asObservable()
+            .bind(to: textView.rx.text)
+            .disposed(by: disposeBag)
+
+        viewModel.isListeningRelay
+            .asObservable()
+            .subscribe(onNext: { [weak listenButton] isListening in
+                let buttonTitle = isListening ? "Stop Listening" : "Start Listening"
+                listenButton?.setTitle(buttonTitle, for: .normal)
+            })
+            .disposed(by: disposeBag)
         
-        // Bind ViewModel's isListening to some UI changes if needed
-        viewModel.isListeningChanged = { [weak self] isListening in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.listenButton.setTitle(isListening ? "Stop Listening" : "Start Listening", for: .normal)
-                self.listenButton.setTitleColor(isListening ? .systemRed : .systemBlue, for: .normal)
-            }
-        }
+//        viewModel.requestSpeechRecognitionPermission()
+//            .subscribe(onNext: { [weak self] permissionGranted in
+//                if !permissionGranted {
+//                    let alert = UIAlertController(title: "Permission Required", message: "Please grant permission to use speech recognition.", preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+//                    self?.present(alert, animated: true)
+//                }
+//            })
+//            .disposed(by: disposeBag)
     }
 
     // Additional setup and layout code
