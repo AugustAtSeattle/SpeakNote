@@ -21,8 +21,8 @@ jobs:
 
     - name: Build iOS project
       run: |
-        xcodebuild build -project YourProjectName.xcodeproj \
-          -scheme YourSchemeName \
-          -sdk iphonesimulator \
+        xcodebuild build -project SpeakNote.xcodeproj \
+          -scheme SpeakNote \
+          -SDK iPhone simulator \
           -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
