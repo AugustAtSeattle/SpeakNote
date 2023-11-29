@@ -17,6 +17,8 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
+    private var lastTranscriptTimestamp: Date?
+    private var silenceTimer: Timer?
 
     // Relay for the listening state, initialized with `false`.
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
@@ -53,6 +55,8 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         do {
             try audioEngine.start()
             isListeningRelay.accept(true)
+            lastTranscriptTimestamp = Date()
+            silenceTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(checkForSilence), userInfo: nil, repeats: true)
         } catch {
             print("Error starting audio engine: \(error)")
         }
@@ -89,6 +93,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             if let result = result {
+                self?.lastTranscriptTimestamp = Date()
                 self?.transcribedText.accept(result.bestTranscription.formattedString)
             } else if let error = error {
                 print("Recognition task error: \(error)")
@@ -100,13 +105,25 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
             self?.recognitionRequest?.append(buffer)
         }
     }
-
     
+    @objc private func checkForSilence() {
+        guard let lastTimestamp = lastTranscriptTimestamp else { return }
+
+        if Date().timeIntervalSince(lastTimestamp) >= 15 {
+            // Detected 15 seconds of silence
+            stopListening()
+        }
+    }
+
     func stopListening() {
         audioEngine.stop()
         // Safely remove the tap on the inputNode.
         audioEngine.inputNode.removeTap(onBus: 0)
         recognitionRequest?.endAudio()
+        recognitionRequest = nil
+        silenceTimer?.invalidate()
+        silenceTimer = nil
+        lastTranscriptTimestamp = nil
         
         // Cancel the previous task if it's running.
         if let recognitionTask = self.recognitionTask {
@@ -157,4 +174,3 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         }
     }
 }
-
