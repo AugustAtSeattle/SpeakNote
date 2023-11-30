@@ -7,9 +7,20 @@
 
 import Foundation
 
+enum NoteStatus: String {
+    case finished = "Finished"
+    case pending = "Pending"  // Replacing "Not Yet" with "Pending"
+    case unknown = "Unknown"
+}
+
+
 struct Note {
     let id: Int64
     let title: String
-    let body: String
-//    let createdAt: Date
+    let details: String?
+    let dueDate: Date?
+    let location: String?
+    let category: String?
+    let status: NoteStatus
 }
+
