@@ -17,6 +17,9 @@
 		CC17DC4C2B1539AB0084679B /* SpeakNoteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */; };
 		CC17DC4E2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */; };
 		CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC17DC5A2B154B460084679B /* SpeechViewModel.swift */; };
+		CC2F76892B184C4B00C27D1A /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = CC2F76882B184C4B00C27D1A /* SQLite */; };
+		CC2F768C2B184CBE00C27D1A /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2F768B2B184CBE00C27D1A /* DatabaseManager.swift */; };
+		CC2F768E2B184D2300C27D1A /* NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2F768D2B184D2300C27D1A /* NoteModel.swift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -53,6 +56,8 @@
 		CC17DC4B2B1539AB0084679B /* SpeakNoteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteUITests.swift; sourceTree = "<group>"; };
 		CC17DC4D2B1539AB0084679B /* SpeakNoteUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakNoteUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CC17DC5A2B154B460084679B /* SpeechViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechViewModel.swift; sourceTree = "<group>"; };
+		CC2F768B2B184CBE00C27D1A /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		CC2F768D2B184D2300C27D1A /* NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC2F76892B184C4B00C27D1A /* SQLite in Frameworks */,
 				CC6A20852B16641A00040F42 /* RxSwift in Frameworks */,
 				CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */,
 			);
@@ -109,6 +115,7 @@
 				CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */,
 				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
 				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
+				CC2F768A2B184C9D00C27D1A /* Service */,
 				CC17DC302B1539AB0084679B /* Main.storyboard */,
 				CC17DC332B1539AB0084679B /* Assets.xcassets */,
 				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
@@ -134,6 +141,15 @@
 			path = SpeakNoteUITests;
 			sourceTree = "<group>";
 		};
+		CC2F768A2B184C9D00C27D1A /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				CC2F768B2B184CBE00C27D1A /* DatabaseManager.swift */,
+				CC2F768D2B184D2300C27D1A /* NoteModel.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -153,6 +169,7 @@
 			packageProductDependencies = (
 				CC6A20822B16641A00040F42 /* RxCocoa */,
 				CC6A20842B16641A00040F42 /* RxSwift */,
+				CC2F76882B184C4B00C27D1A /* SQLite */,
 			);
 			productName = SpeakNote;
 			productReference = CC17DC272B1539AB0084679B /* SpeakNote.app */;
@@ -228,6 +245,7 @@
 			mainGroup = CC17DC1E2B1539AB0084679B;
 			packageReferences = (
 				CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 			);
 			productRefGroup = CC17DC282B1539AB0084679B /* Products */;
 			projectDirPath = "";
@@ -273,7 +291,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */,
+				CC2F768E2B184D2300C27D1A /* NoteModel.swift in Sources */,
 				CC17DC2F2B1539AB0084679B /* MainViewController.swift in Sources */,
+				CC2F768C2B184CBE00C27D1A /* DatabaseManager.swift in Sources */,
 				CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
 			);
@@ -619,6 +639,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.14.1;
+			};
+		};
 		CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -630,6 +658,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CC2F76882B184C4B00C27D1A /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
 		CC6A20822B16641A00040F42 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */;

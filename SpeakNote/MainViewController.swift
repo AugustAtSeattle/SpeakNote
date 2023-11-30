@@ -19,7 +19,11 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let notes = DatabaseManager.shared.fetchNotes()
+        print("begin notes",notes)
+        _ = DatabaseManager.shared.createNote(title: "Test", body: "This is a test")
+        print(notes)
+        print("end notes",notes)
         // Setup textView and listenButton
         textView.isEditable = false
         textView.isSelectable = false
