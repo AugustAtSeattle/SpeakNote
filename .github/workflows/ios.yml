@@ -12,9 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Xcode
-      uses: maxim-lobanov/setup-xcode@v1
+      uses: maxim-Lobanov/setup-xcode@v1
       with:
-        xcode-version: '12.4' # Specify your Xcode version
+        Xcode-version: '14.2.0'
 
     - name: Build SpeakNote project
       run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -configuration Debug
