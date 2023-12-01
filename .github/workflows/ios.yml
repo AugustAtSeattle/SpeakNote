@@ -23,4 +23,4 @@ jobs:
       run: xcrun simctl list devices
       
     - name: Run tests
-      run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4'
+      run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2'
