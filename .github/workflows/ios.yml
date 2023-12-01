@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ main ]
     
-echo "API_KEY = $API_KEY" > Config.xcconfig
-
 jobs:
   build:
     runs-on: macos-latest
