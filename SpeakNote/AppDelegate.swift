@@ -13,7 +13,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         _ = DatabaseManager.shared
+        accessAPIKey()
         return true
+    }
+    
+    func accessAPIKey() {
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
+           let myDict = NSDictionary(contentsOfFile: path),
+           let apiKey = myDict["OPENAI API Key"] as? String {
+        } else {
+            print("API key: not found")
+        }
     }
 
     // MARK: UISceneSession Lifecycle

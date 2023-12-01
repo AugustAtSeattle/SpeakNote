@@ -5,12 +5,18 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+    
 jobs:
   build:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: Generate Config.xcconfig
+      run: |
+        echo "API_KEY = secrets.API_KEY" > Config.xcconfig
+        # echo "API_KEY = ${{ secrets.API_KEY }}" > Config.xcconfig
+        
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
