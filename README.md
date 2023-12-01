@@ -1,5 +1,5 @@
 # SpeakNote
-
+[![SpeakNote iOS Build](https://github.com/AugustAtSeattle/SpeakNote/actions/workflows/ios.yml/badge.svg?branch=main)](https://github.com/AugustAtSeattle/SpeakNote/actions/workflows/ios.yml)
 ## Project Overview
 SpeakNote is an innovative iOS application designed to revolutionize the way users interact with note-taking apps. Utilizing voice recognition and advanced AI, SpeakNote offers a seamless experience in creating, managing, and retrieving notes through voice commands.
 
