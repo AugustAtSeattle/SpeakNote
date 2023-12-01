@@ -14,8 +14,8 @@ jobs:
 
     - name: Generate Config.xcconfig
       run: |
-        echo "API_KEY = secrets.API_KEY" > SpeakNote/Config.xcconfig
-        # echo "API_KEY = ${{ secrets.API_KEY }}" > SpeakNote/Config.xcconfig
+        echo "API_KEY = secrets.API_KEY" > Config.xcconfig
+        # echo "API_KEY = ${{ secrets.API_KEY }}" > Config.xcconfig
         
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
