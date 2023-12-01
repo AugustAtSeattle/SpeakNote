@@ -17,7 +17,7 @@ jobs:
         Xcode-version: '14.2.0'
 
     - name: Build SpeakNote project
-      run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -configuration Debug
+      run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iPhone simulator -configuration Debug
 
     - name: Run tests
-      run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.4'
+      run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iPhone simulator -destination 'platform=iOS Simulator,name=Any iOS Simulator Device'
