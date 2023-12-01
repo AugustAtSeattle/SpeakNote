@@ -137,16 +137,10 @@
 		CC17DC292B1539AB0084679B /* SpeakNote */ = {
 			isa = PBXGroup;
 			children = (
-				CC17DC2A2B1539AB0084679B /* AppDelegate.swift */,
-				CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */,
-				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
-				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
+				CC59DB542B1AA15C008AFC2F /* Features */,
 				CC2F768A2B184C9D00C27D1A /* Services */,
 				CC59DB512B1A9DC1008AFC2F /* Networking */,
-				CC17DC302B1539AB0084679B /* Main.storyboard */,
-				CC17DC332B1539AB0084679B /* Assets.xcassets */,
-				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
-				CC17DC382B1539AB0084679B /* Info.plist */,
+				CC59DB552B1AA186008AFC2F /* SupportingFiles */,
 			);
 			path = SpeakNote;
 			sourceTree = "<group>";
@@ -209,6 +203,36 @@
 				CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		CC59DB542B1AA15C008AFC2F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				CC59DB562B1AA1DC008AFC2F /* NoteTaking */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		CC59DB552B1AA186008AFC2F /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC2A2B1539AB0084679B /* AppDelegate.swift */,
+				CC17DC2C2B1539AB0084679B /* SceneDelegate.swift */,
+				CC17DC302B1539AB0084679B /* Main.storyboard */,
+				CC17DC332B1539AB0084679B /* Assets.xcassets */,
+				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
+				CC17DC382B1539AB0084679B /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		CC59DB562B1AA1DC008AFC2F /* NoteTaking */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
+				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
+			);
+			path = NoteTaking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
            let myDict = NSDictionary(contentsOfFile: path),
            let apiKey = myDict["OPENAI API Key"] as? String {
+            print("API key: found", apiKey)
         } else {
             print("API key: not found")
         }
