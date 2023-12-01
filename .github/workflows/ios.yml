@@ -1,28 +1,23 @@
-name: iOS Build
+name: SpeakNote iOS Build
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
-    name: Build iOS project
     runs-on: macos-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
+    - uses: actions/checkout@v2
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: 'latest' # Specify the Xcode version
+        xcode-version: '12.4' # Specify your Xcode version
 
-    - name: Select a Simulator
-      run: echo "SIMULATOR_UDID=$(xcrun simctl list devices available | grep 'iPhone 12' | awk -F ' - ' '{print $NF}' | head -1)" >> $GITHUB_ENV
+    - name: Build SpeakNote project
+      run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -configuration Debug
 
-    - name: Build iOS project
-      run: |
-        xcodebuild build -project SpeakNote.xcodeproj \
-          -scheme SpeakNote \
-          -SDK iPhone simulator \
-          -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+    - name: Run tests
+      run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.4'
