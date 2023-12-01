@@ -29,7 +29,10 @@
 		CC59DB412B1A782B008AFC2F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB402B1A782B008AFC2F /* RxCocoa */; };
 		CC59DB432B1A7832008AFC2F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB422B1A7832008AFC2F /* RxSwift */; };
 		CC59DB452B1A7835008AFC2F /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB442B1A7835008AFC2F /* SQLite */; };
-		CC59DB4B2B1A84C2008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */; };
+		CC59DB4E2B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
+		CC59DB4F2B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
+		CC59DB502B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
+		CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -71,7 +74,8 @@
 		CC2F768F2B19635000C27D1A /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
 		CC2F76912B19662600C27D1A /* WhisperRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperRecognitionService.swift; sourceTree = "<group>"; };
 		CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechRecognitionService.swift; sourceTree = "<group>"; };
-		CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperNetworkClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +120,7 @@
 				CC17DC4A2B1539AB0084679B /* SpeakNoteUITests */,
 				CC17DC282B1539AB0084679B /* Products */,
 				CC59DB392B1A77C6008AFC2F /* Frameworks */,
-				CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */,
+				CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,6 +142,7 @@
 				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
 				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
 				CC2F768A2B184C9D00C27D1A /* Services */,
+				CC59DB512B1A9DC1008AFC2F /* Networking */,
 				CC17DC302B1539AB0084679B /* Main.storyboard */,
 				CC17DC332B1539AB0084679B /* Assets.xcassets */,
 				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
@@ -166,29 +171,29 @@
 		CC2F768A2B184C9D00C27D1A /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				CC2F76962B19669100C27D1A /* SpeechRecognition */,
-				CC2F76952B19668000C27D1A /* Database */,
+				CC2F76962B19669100C27D1A /* SpeechServices */,
+				CC2F76952B19668000C27D1A /* DatabaseServices */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		CC2F76952B19668000C27D1A /* Database */ = {
+		CC2F76952B19668000C27D1A /* DatabaseServices */ = {
 			isa = PBXGroup;
 			children = (
 				CC2F768B2B184CBE00C27D1A /* DatabaseManager.swift */,
 				CC2F768D2B184D2300C27D1A /* NoteModel.swift */,
 			);
-			path = Database;
+			path = DatabaseServices;
 			sourceTree = "<group>";
 		};
-		CC2F76962B19669100C27D1A /* SpeechRecognition */ = {
+		CC2F76962B19669100C27D1A /* SpeechServices */ = {
 			isa = PBXGroup;
 			children = (
 				CC2F768F2B19635000C27D1A /* SpeechRecognitionManager.swift */,
 				CC2F76912B19662600C27D1A /* WhisperRecognitionService.swift */,
 				CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */,
 			);
-			path = SpeechRecognition;
+			path = SpeechServices;
 			sourceTree = "<group>";
 		};
 		CC59DB392B1A77C6008AFC2F /* Frameworks */ = {
@@ -196,6 +201,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC59DB512B1A9DC1008AFC2F /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,7 +334,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC59DB4B2B1A84C2008AFC2F /* Config.xcconfig in Resources */,
+				CC59DB4E2B1A96A5008AFC2F /* Config.xcconfig in Resources */,
 				CC17DC372B1539AB0084679B /* LaunchScreen.storyboard in Resources */,
 				CC17DC342B1539AB0084679B /* Assets.xcassets in Resources */,
 				CC17DC322B1539AB0084679B /* Main.storyboard in Resources */,
@@ -332,6 +345,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC59DB4F2B1A96A5008AFC2F /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC59DB502B1A96A5008AFC2F /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +370,7 @@
 				CC2F768E2B184D2300C27D1A /* NoteModel.swift in Sources */,
 				CC17DC2F2B1539AB0084679B /* MainViewController.swift in Sources */,
 				CC2F768C2B184CBE00C27D1A /* DatabaseManager.swift in Sources */,
+				CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */,
 				CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */,
 				CC2F76922B19662600C27D1A /* WhisperRecognitionService.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
@@ -415,6 +431,7 @@
 /* Begin XCBuildConfiguration section */
 		CC17DC4F2B1539AB0084679B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -475,6 +492,7 @@
 		};
 		CC17DC502B1539AB0084679B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -529,7 +547,7 @@
 		};
 		CC17DC522B1539AB0084679B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -559,7 +577,7 @@
 		};
 		CC17DC532B1539AB0084679B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -589,7 +607,7 @@
 		};
 		CC17DC552B1539AB0084679B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -610,7 +628,7 @@
 		};
 		CC17DC562B1539AB0084679B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -631,7 +649,7 @@
 		};
 		CC17DC582B1539AB0084679B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -650,7 +668,7 @@
 		};
 		CC17DC592B1539AB0084679B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC59DB4A2B1A84AE008AFC2F /* Config.xcconfig */;
+			baseConfigurationReference = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
