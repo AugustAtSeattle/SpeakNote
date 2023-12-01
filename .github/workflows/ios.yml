@@ -12,16 +12,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Xcode
-      uses: maxim-Lobanov/setup-xcode@v1
+      uses: maxim-lobanov/setup-xcode@v1
       with:
         Xcode-version: '14.2.0'
 
     - name: Build SpeakNote project
-      run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -SDK iphonesimulator -configuration Debug
+      run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -configuration Debug
 
     - name: List available simulators
       run: xcrun small list devices
-  
+
     - name: Run tests
       run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=Any iOS Simulator Device'
-
