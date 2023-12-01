@@ -5,12 +5,20 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    
+echo "API_KEY = $API_KEY" > Config.xcconfig
 
 jobs:
   build:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: Generate Config.xcconfig
+      run: |
+        echo "API_KEY = secrets.API_KEY" > SpeakNote/Config.xcconfig
+        # echo "API_KEY = ${{ se#crets.API_KEY }}" > SpeakNote/Config.xcconfig
+        
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
