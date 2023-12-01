@@ -20,7 +20,7 @@ jobs:
       run: xcodebuild -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -configuration Debug
 
     - name: List available simulators
-      run: xcrun small list devices
+      run: xcrun simctl list devices
 
     - name: Run tests
       run: xcodebuild test -project SpeakNote.xcodeproj -scheme SpeakNote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=Any iOS Simulator Device'
