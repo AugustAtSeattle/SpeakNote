@@ -23,6 +23,12 @@
 		CC2F76902B19635000C27D1A /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2F768F2B19635000C27D1A /* SpeechRecognitionManager.swift */; };
 		CC2F76922B19662600C27D1A /* WhisperRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2F76912B19662600C27D1A /* WhisperRecognitionService.swift */; };
 		CC2F76942B19665200C27D1A /* AppleSpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */; };
+		CC59DB3B2B1A77C6008AFC2F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB3A2B1A77C6008AFC2F /* RxCocoa */; };
+		CC59DB3D2B1A7817008AFC2F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB3C2B1A7817008AFC2F /* RxSwift */; };
+		CC59DB3F2B1A781B008AFC2F /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB3E2B1A781B008AFC2F /* SQLite */; };
+		CC59DB412B1A782B008AFC2F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB402B1A782B008AFC2F /* RxCocoa */; };
+		CC59DB432B1A7832008AFC2F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB422B1A7832008AFC2F /* RxSwift */; };
+		CC59DB452B1A7835008AFC2F /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB442B1A7835008AFC2F /* SQLite */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -81,6 +87,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC59DB3F2B1A781B008AFC2F /* SQLite in Frameworks */,
+				CC59DB3D2B1A7817008AFC2F /* RxSwift in Frameworks */,
+				CC59DB3B2B1A77C6008AFC2F /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +97,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC59DB452B1A7835008AFC2F /* SQLite in Frameworks */,
+				CC59DB432B1A7832008AFC2F /* RxSwift in Frameworks */,
+				CC59DB412B1A782B008AFC2F /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +113,7 @@
 				CC17DC402B1539AB0084679B /* SpeakNoteTests */,
 				CC17DC4A2B1539AB0084679B /* SpeakNoteUITests */,
 				CC17DC282B1539AB0084679B /* Products */,
+				CC59DB392B1A77C6008AFC2F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -175,6 +188,13 @@
 			path = SpeechRecognition;
 			sourceTree = "<group>";
 		};
+		CC59DB392B1A77C6008AFC2F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -214,6 +234,11 @@
 				CC17DC3F2B1539AB0084679B /* PBXTargetDependency */,
 			);
 			name = SpeakNoteTests;
+			packageProductDependencies = (
+				CC59DB3A2B1A77C6008AFC2F /* RxCocoa */,
+				CC59DB3C2B1A7817008AFC2F /* RxSwift */,
+				CC59DB3E2B1A781B008AFC2F /* SQLite */,
+			);
 			productName = SpeakNoteTests;
 			productReference = CC17DC3D2B1539AB0084679B /* SpeakNoteTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -232,6 +257,11 @@
 				CC17DC492B1539AB0084679B /* PBXTargetDependency */,
 			);
 			name = SpeakNoteUITests;
+			packageProductDependencies = (
+				CC59DB402B1A782B008AFC2F /* RxCocoa */,
+				CC59DB422B1A7832008AFC2F /* RxSwift */,
+				CC59DB442B1A7835008AFC2F /* SQLite */,
+			);
 			productName = SpeakNoteUITests;
 			productReference = CC17DC472B1539AB0084679B /* SpeakNoteUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -689,6 +719,36 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		CC2F76882B184C4B00C27D1A /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+		CC59DB3A2B1A77C6008AFC2F /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CC59DB3C2B1A7817008AFC2F /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		CC59DB3E2B1A781B008AFC2F /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+		CC59DB402B1A782B008AFC2F /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CC59DB422B1A7832008AFC2F /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		CC59DB442B1A7835008AFC2F /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
