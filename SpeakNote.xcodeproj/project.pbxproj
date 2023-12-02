@@ -76,7 +76,7 @@
 		CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechRecognitionService.swift; sourceTree = "<group>"; };
 		CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperNetworkClient.swift; sourceTree = "<group>"; };
 		CC59DB572B1B125F008AFC2F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		CC59DB5B2B1B12DA008AFC2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = SpeakNote/Info.plist; sourceTree = SOURCE_ROOT; };
+		CC59DB5B2B1B12DA008AFC2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				CC17DC292B1539AB0084679B /* SpeakNote */,
+				CC59DB5B2B1B12DA008AFC2F /* Info.plist */,
 				CC17DC402B1539AB0084679B /* SpeakNoteTests */,
 				CC17DC4A2B1539AB0084679B /* SpeakNoteUITests */,
 				CC17DC282B1539AB0084679B /* Products */,
@@ -222,7 +223,6 @@
 				CC17DC302B1539AB0084679B /* Main.storyboard */,
 				CC17DC332B1539AB0084679B /* Assets.xcassets */,
 				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
-				CC59DB5B2B1B12DA008AFC2F /* Info.plist */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
