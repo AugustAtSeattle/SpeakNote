@@ -33,6 +33,7 @@
 		CC59DB4F2B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
 		CC59DB502B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
 		CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */; };
+		CC59DB5F2B1BA9A2008AFC2F /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB5E2B1BA9A2008AFC2F /* OpenAISwift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -83,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC59DB5F2B1BA9A2008AFC2F /* OpenAISwift in Frameworks */,
 				CC2F76892B184C4B00C27D1A /* SQLite in Frameworks */,
 				CC6A20852B16641A00040F42 /* RxSwift in Frameworks */,
 				CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */,
@@ -231,6 +233,7 @@
 				CC6A20822B16641A00040F42 /* RxCocoa */,
 				CC6A20842B16641A00040F42 /* RxSwift */,
 				CC2F76882B184C4B00C27D1A /* SQLite */,
+				CC59DB5E2B1BA9A2008AFC2F /* OpenAISwift */,
 			);
 			productName = SpeakNote;
 			productReference = CC17DC272B1539AB0084679B /* SpeakNote.app */;
@@ -317,6 +320,7 @@
 			packageReferences = (
 				CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				CC59DB5D2B1BA9A2008AFC2F /* XCRemoteSwiftPackageReference "OpenAISwift" */,
 			);
 			productRefGroup = CC17DC282B1539AB0084679B /* Products */;
 			projectDirPath = "";
@@ -480,7 +484,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -535,7 +539,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -561,7 +565,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -591,7 +595,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -615,7 +619,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27AF2HSKK7;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNoteTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -636,7 +640,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27AF2HSKK7;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AugustAtSeattle.SpeakNoteTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -735,6 +739,14 @@
 				minimumVersion = 0.14.1;
 			};
 		};
+		CC59DB5D2B1BA9A2008AFC2F /* XCRemoteSwiftPackageReference "OpenAISwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/adamrushy/OpenAISwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		CC6A20812B16641A00040F42 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -780,6 +792,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CC2F76872B184C4B00C27D1A /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
+		};
+		CC59DB5E2B1BA9A2008AFC2F /* OpenAISwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC59DB5D2B1BA9A2008AFC2F /* XCRemoteSwiftPackageReference "OpenAISwift" */;
+			productName = OpenAISwift;
 		};
 		CC6A20822B16641A00040F42 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
