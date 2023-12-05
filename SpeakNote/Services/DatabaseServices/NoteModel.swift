@@ -8,17 +8,18 @@
 import Foundation
 
 enum NoteStatus: String {
-    case finished = "Finished"
-    case pending = "Pending"  // Replacing "Not Yet" with "Pending"
+    case finished = "Completed"
+    case pending = "Pending"
     case unknown = "Unknown"
+    case recurring = "Recurring"
 }
-
 
 struct Note {
     let id: Int64
-    let title: String
+    let subject: String
     let details: String?
-    let dueDate: Date?
+    let createDate: Date
+    let deadline: Date?
     let location: String?
     let category: String?
     let status: NoteStatus

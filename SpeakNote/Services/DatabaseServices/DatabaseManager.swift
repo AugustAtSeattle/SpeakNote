@@ -13,10 +13,10 @@ class DatabaseManager {
     private var db: Connection?
     private let notesTable = Table("notes")
     private let id = Expression<Int64>("id")
-    private let title = Expression<String>("title")
-    private let body = Expression<String>("body")
+    private let subject = Expression<String>("subject")
     private let details = Expression<String?>("details")
-    private let dueDate = Expression<Date?>("dueDate")
+    private let createDate = Expression<Date?>("createDate")
+    private let deadline = Expression<Date?>("deadline")
     private let location = Expression<String?>("location")
     private let category = Expression<String?>("category")
     private let status = Expression<String>("status")
@@ -36,9 +36,10 @@ class DatabaseManager {
             // Create the notes table if it doesn't exist
             try db?.run(notesTable.create(ifNotExists: true) { t in
                 t.column(id, primaryKey: .autoincrement)
-                t.column(title)
+                t.column(subject)
                 t.column(details)
-                t.column(dueDate)
+                t.column(createDate)
+                t.column(deadline)
                 t.column(location)
                 t.column(category)
                 t.column(status)
@@ -55,9 +56,10 @@ extension DatabaseManager {
     func createNote(title: String, details: String?, dueDate: Date?, location: String?, category: String?, status: NoteStatus) -> Bool {
         do {
             let insert = notesTable.insert(
-                self.title <- title,
+                self.subject <- title,
                 self.details <- details,
-                self.dueDate <- dueDate,
+                self.createDate <- Date(),
+                self.deadline <- dueDate,
                 self.location <- location,
                 self.category <- category,
                 self.status <- status.rawValue
@@ -76,15 +78,15 @@ extension DatabaseManager {
 
         do {
             for note in try db!.prepare(notesTable) {
-                notes.append(Note(
-                    id: note[id],
-                    title: note[title],
-                    details: note[details],
-                    dueDate: note[dueDate],
-                    location: note[location],
-                    category: note[category],
-                    status: NoteStatus(rawValue: note[status]) ?? .unknown
-                ))
+                
+                notes.append(Note(id: note[id],
+                                  subject: note[subject],
+                                  details: note[details],
+                                  createDate: Date(),
+                                  deadline: note[deadline],
+                                  location: note[location],
+                                  category: note[category],
+                                  status: NoteStatus(rawValue: note[status]) ?? .unknown))
             }
         } catch {
             print("Fetch failed: \(error)")
