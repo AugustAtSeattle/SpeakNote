@@ -8,22 +8,21 @@
 # client = OpenAI(api_key=os.environ["OPENAI_API_KEY"],organization=os.environ["ORGANIZATION_ID"])
 
 
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 import os
 
 # Ensure your OPENAI_API_KEY is set as an environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def chat_with_openai(message, chat_log=None):
     try:
         # Setting up a chat
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # or use another model like "gpt-4" if available
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": message}
-            ] + ([] if chat_log is None else chat_log)
-        )
+        response = client.chat.completions.create(model="gpt-3.5-turbo",  # or use another model like "gpt-4" if available
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": message}
+        ] + ([] if chat_log is None else chat_log))
 
         # Extracting the response
         answer = response['choices'][0]['message']['content']
