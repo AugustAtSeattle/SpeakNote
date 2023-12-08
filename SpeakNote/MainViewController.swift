@@ -70,15 +70,6 @@ class MainViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-//        viewModel.requestSpeechRecognitionPermission()
-//            .subscribe(onNext: { [weak self] permissionGranted in
-//                if !permissionGranted {
-//                    let alert = UIAlertController(title: "Permission Required", message: "Please grant permission to use speech recognition.", preferredStyle: .alert)
-//                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-//                    self?.present(alert, animated: true)
-//                }
-//            })
-//            .disposed(by: disposeBag)
     }
 
     // Additional setup and layout code

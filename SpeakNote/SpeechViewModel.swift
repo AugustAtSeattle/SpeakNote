@@ -49,10 +49,21 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     }
     
     func toggleListening() {
-        if isListeningRelay.value {
-            stopListening()
+        let speechRecognizerAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
+        let microphoneAuthorized = AVAudioSession.sharedInstance().recordPermission == .granted
+
+        // If either permission is not granted, request them and then return immediately
+        if !speechRecognizerAuthorized || !microphoneAuthorized {
+            requestSpeechAndMicrophonePermissions { _ in
+                // Do nothing
+            }
         } else {
-            startListening()
+            // If permissions are already granted, proceed with toggling listening
+            if isListeningRelay.value {
+                stopListening()
+            } else {
+                startListening()
+            }
         }
     }
 
@@ -64,31 +75,46 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     func stopListening() {
         speechManager.stopRecognition()
     }
-
     
-    func requestSpeechRecognitionPermission() {
+    func requestSpeechAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
+        requestSpeechRecognitionPermission { speechGranted in
+            if speechGranted {
+                self.requestMicrophonePermission(completion: completion)
+            } else {
+                completion(false)
+            }
+        }
+    }
+    
+    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+        AVAudioSession.sharedInstance().requestRecordPermission { granted in
+            DispatchQueue.main.async {
+                if granted {
+                    print("Microphone permission granted")
+                } else {
+                    print("Microphone permission denied")
+                }
+                completion(granted)
+            }
+        }
+    }
+    
+    func requestSpeechRecognitionPermission(completion: @escaping (Bool) -> Void) {
         SFSpeechRecognizer.requestAuthorization { authStatus in
             DispatchQueue.main.async {
                 switch authStatus {
                 case .authorized:
                     print("Speech recognition authorization granted")
-                    // You can now proceed with speech recognition
+                    completion(true)
 
-                case .denied:
-                    print("Speech recognition authorization denied")
-                    // Handle the denied case
-
-                case .restricted:
-                    print("Speech recognition not available on this device")
-                    // Handle the restricted case
-
-                case .notDetermined:
-                    print("Speech recognition authorization not determined")
-                    // Handle the not determined case
+                case .denied, .restricted, .notDetermined:
+                    print("Speech recognition authorization denied, restricted, or not determined")
+                    // Optionally, show an alert or update the UI to inform the user
+                    completion(false)
 
                 @unknown default:
                     print("Unknown authorization status")
-                    // Handle potential future cases
+                    completion(false)
                 }
             }
         }
