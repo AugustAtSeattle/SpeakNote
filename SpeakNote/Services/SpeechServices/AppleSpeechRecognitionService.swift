@@ -108,6 +108,7 @@ class AppleSpeechRecognitionService: SpeechRecognitionService {
         
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             if let result = result {
+                print("Recognition task result: \(result.bestTranscription.formattedString)")
                 self?.lastTranscriptTimestamp = Date()
                 self?.onResult?(result.bestTranscription.formattedString) // Trigger the onResult callback if set
             } else if let error = error {
@@ -126,6 +127,7 @@ class AppleSpeechRecognitionService: SpeechRecognitionService {
 
         if Date().timeIntervalSince(lastTimestamp) >= 15 {
             // Detected 15 seconds of silence
+            print("Detected 15 seconds of silence")
             stopRecognition()
         }
     }
