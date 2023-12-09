@@ -48,9 +48,6 @@ class AssistantClient {
         apiKey = getAPIKey()
         assistantId = getAssistantID()
         threadId = getThreadID()
-        guard let assistantId = assistantId else {
-            fatalError("Invalid assistantId")
-        }
     }
     
     private func getAPIKey() -> String? {
@@ -65,7 +62,7 @@ class AssistantClient {
     private func getThreadID() -> String? {
         guard let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
               let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
-              let threadId = dict["OPENAI ThreadID"] as? String else {
+              let threadID = dict["OPENAI ThreadID"] as? String else {
             return nil
         }
         return threadID
