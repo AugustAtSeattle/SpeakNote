@@ -34,6 +34,7 @@
 		CC59DB502B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
 		CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */; };
 		CC59DB5F2B1BA9A2008AFC2F /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB5E2B1BA9A2008AFC2F /* OpenAISwift */; };
+		CC59DB612B24F8BD008AFC2F /* OpenAIAssistantClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB602B24F8BD008AFC2F /* OpenAIAssistantClient.swift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -77,6 +78,7 @@
 		CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechRecognitionService.swift; sourceTree = "<group>"; };
 		CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperNetworkClient.swift; sourceTree = "<group>"; };
+		CC59DB602B24F8BD008AFC2F /* OpenAIAssistantClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIAssistantClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */,
+				CC59DB602B24F8BD008AFC2F /* OpenAIAssistantClient.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				CC2F768C2B184CBE00C27D1A /* DatabaseManager.swift in Sources */,
 				CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */,
 				CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */,
+				CC59DB612B24F8BD008AFC2F /* OpenAIAssistantClient.swift in Sources */,
 				CC2F76922B19662600C27D1A /* WhisperRecognitionService.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
 			);
