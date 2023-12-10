@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct Tool: Codable {
-    let type: String
+enum AssistantClientError: Error {
+    case invalidAssistantId
+    case invalidURL
+    case networkError(statusCode: Int, response: URLResponse, data: String?)
+    case decodingError
+    case invalidAPIKey
 }
 
 class AssistantClient {

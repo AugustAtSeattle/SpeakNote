@@ -13,6 +13,7 @@ import RxCocoa
 class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     private let disposeBag = DisposeBag()
     private let speechManager = SpeechRecognitionManager()
+    private let assistant = AssistantClient()
 
     // Relay for the listening state, initialized with `false`.
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
@@ -74,6 +75,14 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
 
     func stopListening() {
         speechManager.stopRecognition()
+        Task{
+            do {
+                let obj = try await assistant.getAssistant()
+                print(obj)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     func requestSpeechAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
