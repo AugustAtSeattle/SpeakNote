@@ -34,6 +34,11 @@
 		CC59DB502B1A96A5008AFC2F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */; };
 		CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */; };
 		CC59DB5F2B1BA9A2008AFC2F /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC59DB5E2B1BA9A2008AFC2F /* OpenAISwift */; };
+		CC59DB612B24F8BD008AFC2F /* OpenAIAssistantClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB602B24F8BD008AFC2F /* OpenAIAssistantClient.swift */; };
+		CC59DB642B25174C008AFC2F /* AssistantRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB632B25174C008AFC2F /* AssistantRequest.swift */; };
+		CC59DB662B251772008AFC2F /* ThreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB652B251772008AFC2F /* ThreadRequest.swift */; };
+		CC59DB682B2517D4008AFC2F /* RunRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB672B2517D4008AFC2F /* RunRequest.swift */; };
+		CC59DB6A2B251A4E008AFC2F /* MessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB692B251A4E008AFC2F /* MessageRequest.swift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -77,6 +82,11 @@
 		CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechRecognitionService.swift; sourceTree = "<group>"; };
 		CC59DB4D2B1A96A5008AFC2F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperNetworkClient.swift; sourceTree = "<group>"; };
+		CC59DB602B24F8BD008AFC2F /* OpenAIAssistantClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIAssistantClient.swift; sourceTree = "<group>"; };
+		CC59DB632B25174C008AFC2F /* AssistantRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantRequest.swift; sourceTree = "<group>"; };
+		CC59DB652B251772008AFC2F /* ThreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadRequest.swift; sourceTree = "<group>"; };
+		CC59DB672B2517D4008AFC2F /* RunRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRequest.swift; sourceTree = "<group>"; };
+		CC59DB692B251A4E008AFC2F /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,9 +218,22 @@
 		CC59DB512B1A9DC1008AFC2F /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				CC59DB622B2516E8008AFC2F /* OPENAIAssistant */,
 				CC59DB522B1A9DE5008AFC2F /* WhisperNetworkClient.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		CC59DB622B2516E8008AFC2F /* OPENAIAssistant */ = {
+			isa = PBXGroup;
+			children = (
+				CC59DB602B24F8BD008AFC2F /* OpenAIAssistantClient.swift */,
+				CC59DB632B25174C008AFC2F /* AssistantRequest.swift */,
+				CC59DB652B251772008AFC2F /* ThreadRequest.swift */,
+				CC59DB672B2517D4008AFC2F /* RunRequest.swift */,
+				CC59DB692B251A4E008AFC2F /* MessageRequest.swift */,
+			);
+			path = OPENAIAssistant;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -368,14 +391,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC59DB642B25174C008AFC2F /* AssistantRequest.swift in Sources */,
 				CC2F76942B19665200C27D1A /* AppleSpeechRecognitionService.swift in Sources */,
 				CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */,
+				CC59DB6A2B251A4E008AFC2F /* MessageRequest.swift in Sources */,
+				CC59DB682B2517D4008AFC2F /* RunRequest.swift in Sources */,
 				CC2F76902B19635000C27D1A /* SpeechRecognitionManager.swift in Sources */,
 				CC2F768E2B184D2300C27D1A /* NoteModel.swift in Sources */,
 				CC17DC2F2B1539AB0084679B /* MainViewController.swift in Sources */,
 				CC2F768C2B184CBE00C27D1A /* DatabaseManager.swift in Sources */,
 				CC59DB532B1A9DE5008AFC2F /* WhisperNetworkClient.swift in Sources */,
 				CC17DC2B2B1539AB0084679B /* AppDelegate.swift in Sources */,
+				CC59DB662B251772008AFC2F /* ThreadRequest.swift in Sources */,
+				CC59DB612B24F8BD008AFC2F /* OpenAIAssistantClient.swift in Sources */,
 				CC2F76922B19662600C27D1A /* WhisperRecognitionService.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
 			);
