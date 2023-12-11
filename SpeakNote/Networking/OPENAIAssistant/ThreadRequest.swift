@@ -22,11 +22,11 @@ struct Thread: Codable {
 extension AssistantClient {
     func createThread(messages: [[String: String]]? = nil, metadata: [String: String]? = nil) async throws -> Thread {
         guard let url = URL(string: "https://api.openai.com/v1/threads") else {
-            fatalError("Invalid URL")
+            throw AssistantClientError.invalidURL
         }
         
         guard let apiKey = self.apiKey else {
-            fatalError("Invalid apiKey")
+            throw AssistantClientError.invalidAPIKey
         }
         
         var request = URLRequest(url: url)
@@ -34,20 +34,21 @@ extension AssistantClient {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.addValue("assistants=v1", forHTTPHeaderField: "OpenAI-Beta")
+                
+        let (data, response) = try await URLSession.shared.data(for: request)
         
-        var body: [String: Any] = [:]
-        if let messages = messages {
-            body["messages"] = messages
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw AssistantClientError.networkError(statusCode:(response as? HTTPURLResponse)?.statusCode ?? 0,
+                                                    response: response,
+                                                    data: String(data: data, encoding: .utf8))
         }
-        if let metadata = metadata {
-            body["metadata"] = metadata
+        
+        do {
+            let thread = try JSONDecoder().decode(Thread.self, from: data)
+            return thread
+        } catch {
+            throw AssistantClientError.decodingError
         }
-        
-        let jsonData = try JSONSerialization.data(withJSONObject: body)
-        request.httpBody = jsonData
-        
-        let (data, _) = try await URLSession.shared.data(for: request)
-        let thread = try JSONDecoder().decode(Thread.self, from: data)
-        return thread
     }
 }

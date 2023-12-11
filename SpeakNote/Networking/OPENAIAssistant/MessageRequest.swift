@@ -7,6 +7,16 @@
 
 import Foundation
 
+struct Content: Codable {
+    let type: String
+    let text: Text?
+}
+
+struct Text: Codable {
+    let value: String
+    let annotations: [String]?
+}
+
 struct Message: Codable {
     let id: String
     let object: String
@@ -27,36 +37,112 @@ struct Message: Codable {
     }
 }
 
-struct Content: Codable {
-    let type: String
-    let text: Text?
-}
+struct MessageList: Codable {
+    let object: String
+    let data: [Message]
+    let firstId: String
+    let lastId: String
+    let hasMore: Bool
 
-struct Text: Codable {
-    let value: String
-    let annotations: [String]?
+    enum CodingKeys: String, CodingKey {
+        case object, data
+        case firstId = "first_id"
+        case lastId = "last_id"
+        case hasMore = "has_more"
+    }
 }
 
 extension AssistantClient {
     
-    func readLatestMessageFromThread(threadId: String) async throws -> Message? {
+    func createMessage(messageContent: String) async throws -> Message {
+        guard let apiKey = apiKey else {
+            throw AssistantClientError.invalidAPIKey
+        }
+        
+        guard let threadId = threadId else {
+            throw AssistantClientError.invalidThreadId
+        }
+        
         guard let url = URL(string: "https://api.openai.com/v1/threads/\(threadId)/messages") else {
-            fatalError("Invalid URL")
+            throw AssistantClientError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("assistants=v1", forHTTPHeaderField: "OpenAI-Beta")
+
+        let body: [String: Any] = [
+            "role": "user",
+            "content": messageContent
+        ]
+
+        let jsonData = try JSONSerialization.data(withJSONObject: body)
+        request.httpBody = jsonData
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw AssistantClientError.networkError(statusCode:(response as? HTTPURLResponse)?.statusCode ?? 0,
+                                                    response: response,
+                                                    data: String(data: data, encoding: .utf8))
         }
         
-        guard let apiKey = self.apiKey else {
-            fatalError("Invalid apiKey")
+        do {
+            let message = try JSONDecoder().decode(Message.self, from: data)
+            return message
+        } catch{
+            throw AssistantClientError.decodingError
         }
-        
+    }
+    
+    func attemptToReadLatestMessage(apiKey: String, url: URL) async throws -> Message? {
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("assistants=v1", forHTTPHeaderField: "OpenAI-Beta")
         
-        let (data, _) = try await URLSession.shared.data(for: request)
-        let messages = try JSONDecoder().decode([Message].self, from: data)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw AssistantClientError.networkError(statusCode:(response as? HTTPURLResponse)?.statusCode ?? 0,
+                                                    response: response,
+                                                    data: String(data: data, encoding: .utf8))
+        }
         
-        // Assuming the latest message is at the end of the array
-        let latestMessage = messages.last(where: { $0.role == "assistant" })
-        return latestMessage
+        do {
+            let messageList = try JSONDecoder().decode(MessageList.self, from: data)
+            let messages = messageList.data
+            let latestMessage = messages.last(where: { $0.role == "assistant" })
+            if latestMessage == nil {
+                throw AssistantClientError.noMessage
+            }
+            return latestMessage
+        } catch{
+            throw AssistantClientError.decodingError
+        }
+    }
+    
+    func readLatestMessageFromThread() async throws -> Message? {
+        guard let apiKey = apiKey else {
+            throw AssistantClientError.invalidAPIKey
+        }
+        
+        guard let threadId = threadId else {
+            throw AssistantClientError.invalidThreadId
+        }
+        
+        guard let url = URL(string: "https://api.openai.com/v1/threads/\(threadId)/messages?limit=1") else {
+            throw AssistantClientError.invalidURL
+        }
+
+        let retryPolicy = RetryPolicy(maxAttempts: 1, delayInSeconds: 1)
+        return try await retry(policy: retryPolicy) {
+            try await self.attemptToReadLatestMessage(apiKey: apiKey, url: url)
+        }
     }
 }
+
+
+
