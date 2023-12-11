@@ -52,7 +52,6 @@ extension AssistantClient {
         request.addValue("assistants=v1", forHTTPHeaderField: "OpenAI-Beta")
         
         let (data, response) = try await URLSession.shared.data(for: request)
-        // print data in string
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {

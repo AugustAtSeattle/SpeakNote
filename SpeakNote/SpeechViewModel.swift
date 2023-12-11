@@ -77,8 +77,9 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         speechManager.stopRecognition()
         Task{
             do {
-                let obj = try await assistant.getAssistant()
-                print(obj)
+//                let message = try await assistant.createMessage(messageContent: "Get a birthday cake before 5")
+                let message = try await assistant.readLatestMessageFromThread()
+                print(message)
             } catch {
                 print(error)
             }
