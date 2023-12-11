@@ -22,11 +22,11 @@ struct Thread: Codable {
 extension AssistantClient {
     func createThread(messages: [[String: String]]? = nil, metadata: [String: String]? = nil) async throws -> Thread {
         guard let url = URL(string: "https://api.openai.com/v1/threads") else {
-            fatalError("Invalid URL")
+            throw AssistantClientError.invalidURL
         }
         
         guard let apiKey = self.apiKey else {
-            fatalError("Invalid apiKey")
+            throw AssistantClientError.invalidAPIKey
         }
         
         var request = URLRequest(url: url)

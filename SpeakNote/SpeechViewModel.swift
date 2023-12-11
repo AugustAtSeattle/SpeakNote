@@ -78,8 +78,14 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         Task{
             do {
 //                let message = try await assistant.createMessage(messageContent: "Get a birthday cake before 5")
-                let message = try await assistant.readLatestMessageFromThread()
-                print(message)
+//                let message = try await assistant.readLatestMessageFromThread()
+//                let run = try await assistant.createRun()
+//                print(run)
+//                if run.status == "queued" {
+                    let message = try await assistant.readLatestMessageFromThread()
+                    print("message: \(message)")
+//                }
+//            message: Optional(SpeakNote.Message(id: "msg_ifRa1Uaupt9KSpHtgfOiXTFf", object: "thread.message", createdAt: 1702258096, threadId: "44", role: "assistant", content: [SpeakNote.Content(type: "text", text: Optional(SpeakNote.Text(value: "{\n  \"query\": \"INSERT INTO notes (subject, details, createDate, deadline, category, status) VALUES (\'Get Birthday Cake\', \'Get a birthday cake before 5 PM\', CURRENT_TIMESTAMP, DATE(\'now\'), \'Personal\', \'Pending\')\"\n}", annotations: Optional([]))))], assistantId: Optional("44"), runId: Optional("33"), metadata: Optional([:])))
             } catch {
                 print(error)
             }

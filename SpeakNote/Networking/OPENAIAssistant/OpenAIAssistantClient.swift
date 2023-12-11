@@ -14,6 +14,36 @@ enum AssistantClientError: Error {
     case invalidThreadId
     case networkError(statusCode: Int, response: URLResponse, data: String?)
     case decodingError
+    case retryLimitReached
+    case noMessage
+}
+
+import Foundation
+
+struct RetryPolicy {
+    let maxAttempts: Int
+    let delayInSeconds: UInt64
+
+    init(maxAttempts: Int, delayInSeconds: UInt64) {
+        self.maxAttempts = maxAttempts
+        self.delayInSeconds = delayInSeconds
+    }
+}
+
+func retry<T>(policy: RetryPolicy, task: @escaping () async throws -> T) async throws -> T {
+    var attempts = 0
+    repeat {
+        do {
+            return try await task()
+        } catch {
+            attempts += 1
+            if attempts >= policy.maxAttempts {
+                throw error
+            }
+            try await Task.sleep(nanoseconds: policy.delayInSeconds * 1_000_000_000)
+        }
+    } while attempts < policy.maxAttempts
+    throw AssistantClientError.retryLimitReached
 }
 
 class AssistantClient {

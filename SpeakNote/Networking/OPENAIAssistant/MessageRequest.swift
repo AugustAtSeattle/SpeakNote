@@ -97,19 +97,7 @@ extension AssistantClient {
         }
     }
     
-    func readLatestMessageFromThread() async throws -> Message? {
-        guard let apiKey = apiKey else {
-            throw AssistantClientError.invalidAPIKey
-        }
-        
-        guard let threadId = threadId else {
-            throw AssistantClientError.invalidThreadId
-        }
-        
-        guard let url = URL(string: "https://api.openai.com/v1/threads/\(threadId)/messages") else {
-            throw AssistantClientError.invalidURL
-        }
-        
+    func attemptToReadLatestMessage(apiKey: String, url: URL) async throws -> Message? {
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
@@ -127,9 +115,34 @@ extension AssistantClient {
             let messageList = try JSONDecoder().decode(MessageList.self, from: data)
             let messages = messageList.data
             let latestMessage = messages.last(where: { $0.role == "assistant" })
+            if latestMessage == nil {
+                throw AssistantClientError.noMessage
+            }
             return latestMessage
         } catch{
             throw AssistantClientError.decodingError
         }
     }
+    
+    func readLatestMessageFromThread() async throws -> Message? {
+        guard let apiKey = apiKey else {
+            throw AssistantClientError.invalidAPIKey
+        }
+        
+        guard let threadId = threadId else {
+            throw AssistantClientError.invalidThreadId
+        }
+        
+        guard let url = URL(string: "https://api.openai.com/v1/threads/\(threadId)/messages?limit=1") else {
+            throw AssistantClientError.invalidURL
+        }
+
+        let retryPolicy = RetryPolicy(maxAttempts: 1, delayInSeconds: 1)
+        return try await retry(policy: retryPolicy) {
+            try await self.attemptToReadLatestMessage(apiKey: apiKey, url: url)
+        }
+    }
 }
+
+
+
