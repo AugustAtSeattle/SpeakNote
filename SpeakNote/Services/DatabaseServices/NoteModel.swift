@@ -18,8 +18,8 @@ struct Note {
     let id: Int64
     let subject: String
     let details: String?
-    let createDate: Date
-    let deadline: Date?
+    let createDate: String
+    let deadline: String?
     let location: String?
     let category: String?
     let status: NoteStatus

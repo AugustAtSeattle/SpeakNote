@@ -20,9 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(notes)
         let insertQuery = """
             INSERT INTO notes (subject, details, createDate, deadline, category, status)
-            VALUES ('Get Birthday Cake', 'Get a birthday cake before 5 PM', CURRENT_TIMESTAMP, DATE('now'), 'Personal', 'Pending');
+            VALUES ('Get Birthday Cake', 'Get a birthday cake before 5 PM', '2024-03-15 15:45:30', '2024-03-15 15:45:30', 'Personal', 'Pending');
         """
-
+//        dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
 //        db.executeQuery(insertQuery)
         
         return true

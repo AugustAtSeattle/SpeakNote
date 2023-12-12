@@ -15,8 +15,8 @@ class DatabaseManager {
     private let id = Expression<Int64>("id")
     private let subject = Expression<String>("subject")
     private let details = Expression<String?>("details")
-    private let createDate = Expression<Date?>("createDate")
-    private let deadline = Expression<Date?>("deadline")
+    private let createDate = Expression<String>("createDate")
+    private let deadline = Expression<String?>("deadline")
     private let location = Expression<String?>("location")
     private let category = Expression<String?>("category")
     private let status = Expression<String>("status")
@@ -30,7 +30,6 @@ class DatabaseManager {
 
             // Create a connection to the database
             connection = try Connection(fileURL.path)
-            
 //            try connection?.run(notesTable.drop(ifExists: true))
 
             // Create the notes table if it doesn't exist
@@ -78,7 +77,7 @@ extension DatabaseManager {
             let insert = notesTable.insert(
                 self.subject <- subject,
                 self.details <- details,
-                self.createDate <- Date(),
+                self.createDate <- createDate,
                 self.deadline <- deadline,
                 self.location <- location,
                 self.category <- category,
@@ -98,11 +97,10 @@ extension DatabaseManager {
 
         do {
             for note in try connection!.prepare(notesTable) {
-                print("debug:",note[deadline])
                 notes.append(Note(id: note[id],
                                   subject: note[subject],
                                   details: note[details],
-                                  createDate: Date(),
+                                  createDate: note[createDate],
                                   deadline: note[deadline],
                                   location: note[location],
                                   category: note[category],
@@ -139,21 +137,21 @@ extension DatabaseManager {
             let count = try connection?.scalar(notesTable.count) ?? 0
             if count == 0 {
                 // Insert sample notes
-                _ = createNote(title: "Buy Eggs",
+                _ = createNote(subject: "Buy Eggs",
                                details: "Buy two dozen eggs from Costco",
                                dueDate: Date(timeIntervalSinceNow: 48 * 3600), // 2 days from now
                                location: "Costco",
                                category: "Shopping",
                                status: .pending)
 
-                _ = createNote(title: "Truck Height Info",
+                _ = createNote(subject: "Truck Height Info",
                                details: "Truck's height is 6 feet 4 without rack, 7.2 with rack",
                                dueDate: nil,
                                location: nil,
                                category: "Vehicle Info",
                                status: .unknown)
 
-                _ = createNote(title: "Buy Books",
+                _ = createNote(subject: "Buy Books",
                                details: "Buy two books named '5 mins story' from Amazon",
                                dueDate: nil,
                                location: "Amazon",
