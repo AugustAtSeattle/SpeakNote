@@ -142,6 +142,33 @@ extension AssistantClient {
             try await self.attemptToReadLatestMessage(apiKey: apiKey, url: url)
         }
     }
+    
+    func extractSQLQuery(from jsonString: String?) -> String? {
+        guard let jsonString = jsonString else {
+            return nil 
+        }
+        guard let data = jsonString.data(using: .utf8) else {
+            print("Error: Cannot create Data from jsonString")
+            return nil
+        }
+
+        do {
+            // Parse the JSON data
+            if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String],
+               let query = jsonDict["query"] {
+                // Remove newlines from the query string
+                let cleanedQuery = query.replacingOccurrences(of: "\\n", with: " ", options: .literal, range: nil)
+                return cleanedQuery
+            } else {
+                print("Error: JSON is not a dictionary")
+            }
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+
+        return nil
+    }
+    
 }
 
 

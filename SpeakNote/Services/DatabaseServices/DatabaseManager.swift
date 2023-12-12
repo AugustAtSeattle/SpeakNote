@@ -10,7 +10,7 @@ import SQLite
 
 class DatabaseManager {
     static let shared = DatabaseManager()
-    private var db: Connection?
+    public var connection: Connection?
     private let notesTable = Table("notes")
     private let id = Expression<Int64>("id")
     private let subject = Expression<String>("subject")
@@ -29,12 +29,12 @@ class DatabaseManager {
                 .appendingPathComponent("db.sqlite3")
 
             // Create a connection to the database
-            db = try Connection(fileURL.path)
+            connection = try Connection(fileURL.path)
             
-//            try db?.run(notesTable.drop(ifExists: true))
+//            try connection?.run(notesTable.drop(ifExists: true))
 
             // Create the notes table if it doesn't exist
-            try db?.run(notesTable.create(ifNotExists: true) { t in
+            try connection?.run(notesTable.create(ifNotExists: true) { t in
                 t.column(id, primaryKey: .autoincrement)
                 t.column(subject)
                 t.column(details)
@@ -45,7 +45,7 @@ class DatabaseManager {
                 t.column(status)
             })
         } catch {
-            db = nil
+            connection = nil
             print("Database initialization error: \(error)")
         }
     }
@@ -53,18 +53,38 @@ class DatabaseManager {
 }
 
 extension DatabaseManager {
-    func createNote(title: String, details: String?, dueDate: Date?, location: String?, category: String?, status: NoteStatus) -> Bool {
+    func executeQuery(_ query: String?) {
+        guard let query = query else {
+            print("error invalid query")
+            return
+        }
+        
+        guard let connection = connection else {
+            print("empty connection")
+            return
+        }
+        
+        do {
+            try connection.run(query)
+            
+            print("Query executed successfully.")
+        } catch {
+            print("An error occurred: \(error)")
+        }
+    }
+    
+    func createNote(subject: String, details: String?, dueDate: Date?, location: String?, category: String?, status: NoteStatus) -> Bool {
         do {
             let insert = notesTable.insert(
-                self.subject <- title,
+                self.subject <- subject,
                 self.details <- details,
                 self.createDate <- Date(),
-                self.deadline <- dueDate,
+                self.deadline <- deadline,
                 self.location <- location,
                 self.category <- category,
                 self.status <- status.rawValue
             )
-            try db?.run(insert)
+            try connection?.run(insert)
             return true
         } catch {
             print("Insert failed: \(error)")
@@ -77,8 +97,8 @@ extension DatabaseManager {
         var notes = [Note]()
 
         do {
-            for note in try db!.prepare(notesTable) {
-                
+            for note in try connection!.prepare(notesTable) {
+                print("debug:",note[deadline])
                 notes.append(Note(id: note[id],
                                   subject: note[subject],
                                   details: note[details],
@@ -99,7 +119,7 @@ extension DatabaseManager {
         let note = notesTable.filter(id == noteId)
         do {
             let update = note.update(status <- NoteStatus.finished.rawValue)
-            if try db?.run(update) ?? 0 > 0 {
+            if try connection?.run(update) ?? 0 > 0 {
                 return true
             } else {
                 print("No note was updated")
@@ -116,7 +136,7 @@ extension DatabaseManager {
     func insertSampleNotesIfEmpty() {
         do {
             // Check if the notes table is empty
-            let count = try db?.scalar(notesTable.count) ?? 0
+            let count = try connection?.scalar(notesTable.count) ?? 0
             if count == 0 {
                 // Insert sample notes
                 _ = createNote(title: "Buy Eggs",
