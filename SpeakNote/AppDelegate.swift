@@ -13,47 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        _ = DatabaseManager.shared
-//        testOPENAI()
+        let _ = DatabaseManager.shared        
         return true
     }
-    
-    func getOpenAIAPIKey() -> String? {
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
-           let myDict = NSDictionary(contentsOfFile: path),
-           let apiKey = myDict["OPENAI API Key"] as? String {
-            return apiKey
-        } else {
-            return nil
-        }
-    }
-    
-    func testOPENAI() {
-        guard let key = getOpenAIAPIKey() else {
-            return
-        }
-        
-        let openAI = OpenAISwift(config: .makeDefaultOpenAI(apiKey: key))
-        
-        Task {
-            do {
-                
-                let chat: [ChatMessage] = [
-                    ChatMessage(role: .system, content: "You are a helpful assistant."),
-                    ChatMessage(role: .user, content: "Who won the world series in 2020?"),
-                    ChatMessage(role: .assistant, content: "The Los Angeles Dodgers won the World Series in 2020."),
-                    ChatMessage(role: .user, content: "Where was it played?")
-                ]
-                            
-                let result = try await openAI.sendChat(with: chat)
-                
-                print(result.choices?.first?.message ?? "unknown")
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
 
     // MARK: UISceneSession Lifecycle
 

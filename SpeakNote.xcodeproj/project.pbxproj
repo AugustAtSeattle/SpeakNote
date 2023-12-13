@@ -39,6 +39,7 @@
 		CC59DB662B251772008AFC2F /* ThreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB652B251772008AFC2F /* ThreadRequest.swift */; };
 		CC59DB682B2517D4008AFC2F /* RunRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB672B2517D4008AFC2F /* RunRequest.swift */; };
 		CC59DB6A2B251A4E008AFC2F /* MessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB692B251A4E008AFC2F /* MessageRequest.swift */; };
+		CC59DB6C2B293A15008AFC2F /* AppleSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 /* End PBXBuildFile section */
@@ -87,6 +88,7 @@
 		CC59DB652B251772008AFC2F /* ThreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadRequest.swift; sourceTree = "<group>"; };
 		CC59DB672B2517D4008AFC2F /* RunRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRequest.swift; sourceTree = "<group>"; };
 		CC59DB692B251A4E008AFC2F /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
+		CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 				CC2F768F2B19635000C27D1A /* SpeechRecognitionManager.swift */,
 				CC2F76912B19662600C27D1A /* WhisperRecognitionService.swift */,
 				CC2F76932B19665200C27D1A /* AppleSpeechRecognitionService.swift */,
+				CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */,
 			);
 			path = SpeechServices;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				CC59DB662B251772008AFC2F /* ThreadRequest.swift in Sources */,
 				CC59DB612B24F8BD008AFC2F /* OpenAIAssistantClient.swift in Sources */,
 				CC2F76922B19662600C27D1A /* WhisperRecognitionService.swift in Sources */,
+				CC59DB6C2B293A15008AFC2F /* AppleSpeechService.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

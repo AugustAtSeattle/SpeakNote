@@ -52,6 +52,11 @@ struct MessageList: Codable {
     }
 }
 
+struct AssistantResponse: Decodable {
+    var query: String
+    let description: String
+}
+
 extension AssistantClient {
     
     func createMessage(messageContent: String) async throws -> Message {
@@ -137,11 +142,29 @@ extension AssistantClient {
             throw AssistantClientError.invalidURL
         }
 
-        let retryPolicy = RetryPolicy(maxAttempts: 1, delayInSeconds: 1)
+        let retryPolicy = RetryPolicy(maxAttempts: 3, delayInSeconds: 1)
         return try await retry(policy: retryPolicy) {
             try await self.attemptToReadLatestMessage(apiKey: apiKey, url: url)
         }
     }
+    
+    func extractAssistantResponse(from jsonString: String?) -> AssistantResponse? {
+        guard let jsonString = jsonString,
+              let data = jsonString.data(using: .utf8) else {
+            return nil
+        }
+
+        do {
+            var assistantResponse = try JSONDecoder().decode(AssistantResponse.self, from: data)
+            assistantResponse.query = assistantResponse.query.replacingOccurrences(of: "\\n", with: " ", options: .literal, range: nil)
+            return assistantResponse
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+    
 }
 
 

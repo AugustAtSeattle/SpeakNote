@@ -14,6 +14,8 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     private let disposeBag = DisposeBag()
     private let speechManager = SpeechRecognitionManager()
     private let assistant = AssistantClient()
+    private let databaseManager = DatabaseManager.shared
+    private let appleSpeechService = AppleSpeechService()
 
     // Relay for the listening state, initialized with `false`.
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
@@ -26,6 +28,17 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     // Relay for the transcribed text, initialized with an empty string.
     let transcribedText = BehaviorRelay<String>(value: "")
     
+    // Relay for the Database records in text, initialized with an empty string.
+    let recordsText = BehaviorRelay<String>(value: "")
+    
+    // Relay for the error state, initialized with nil.
+    let errorRelay = BehaviorRelay<Error?>(value: nil)
+
+    // Public computed property to get the current error state.
+    var error: Error? {
+        return errorRelay.value
+    }
+    
     override init() {
         super.init()
         setupSpeechManager()
@@ -37,10 +50,10 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         speechManager.onResult = { [weak self] result in
             self?.transcribedText.accept(result)
         }
-
-        // Optionally, handle errors if your speechManager provides such a callback
-        speechManager.onError = { error in
-            // Handle any errors
+        
+        // Set up the callback for error handling
+        speechManager.onError = { [weak self] error in
+            self?.errorRelay.accept(error)
         }
         
         // Set up the callback for listening status changes
@@ -74,21 +87,41 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
 
 
     func stopListening() {
+        Task {
+            await performQueryHelper()
+        }
         speechManager.stopRecognition()
-        Task{
-            do {
-//                let message = try await assistant.createMessage(messageContent: "Get a birthday cake before 5")
-//                let message = try await assistant.readLatestMessageFromThread()
-//                let run = try await assistant.createRun()
-//                print(run)
-//                if run.status == "queued" {
-//                    let message = try await assistant.readLatestMessageFromThread()
-//                    print("message: \(message)")
-//                }
-//            message: Optional(SpeakNote.Message(id: "msg_ifRa1Uaupt9KSpHtgfOiXTFf", object: "thread.message", createdAt: 1702258096, threadId: "44", role: "assistant", content: [SpeakNote.Content(type: "text", text: Optional(SpeakNote.Text(value: "{\n  \"query\": \"INSERT INTO notes (subject, details, createDate, deadline, category, status) VALUES (\'Get Birthday Cake\', \'Get a birthday cake before 5 PM\', CURRENT_TIMESTAMP, DATE(\'now\'), \'Personal\', \'Pending\')\"\n}", annotations: Optional([]))))], assistantId: Optional("44"), runId: Optional("33"), metadata: Optional([:])))
-            } catch {
-                print(error)
+
+    }
+
+    func performQueryHelper() async {
+        do {
+            guard !transcribedText.value.isEmpty else {
+                print("Transcribed text is empty")
+                return
             }
+            
+            let messageContent = transcribedText.value
+            let message = try await assistant.createMessage(messageContent: messageContent)
+            let run = try await assistant.createRun()
+            
+            try await Task.sleep(nanoseconds: 10_000_000_000)
+            
+            let latestMessage = try await assistant.readLatestMessageFromThread()
+            
+            if let response = assistant.extractAssistantResponse(from: latestMessage?.content.first?.text?.value) {
+                let query = response.query
+                let description = response.description
+                databaseManager.executeQuery(query)
+                let notes = databaseManager.fetchNotes()
+                self.recordsText.accept(description)
+                appleSpeechService.speak(text: description)
+                print(notes)
+            } else {
+                print("No SQL query found in the message")
+            }
+        } catch {
+            print(error)
         }
     }
     

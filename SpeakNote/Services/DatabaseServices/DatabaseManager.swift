@@ -10,15 +10,15 @@ import SQLite
 
 class DatabaseManager {
     static let shared = DatabaseManager()
-    private var db: Connection?
+    public var connection: Connection?
     private let notesTable = Table("notes")
     private let id = Expression<Int64>("id")
     private let subject = Expression<String>("subject")
     private let details = Expression<String?>("details")
-    private let createDate = Expression<Date?>("createDate")
-    private let deadline = Expression<Date?>("deadline")
+    private let createDate = Expression<String>("createDate")
+    private let deadline = Expression<String?>("deadline")
     private let location = Expression<String?>("location")
-    private let category = Expression<String?>("category")
+    private let category = Expression<String>("category")
     private let status = Expression<String>("status")
 
     private init() {
@@ -29,12 +29,11 @@ class DatabaseManager {
                 .appendingPathComponent("db.sqlite3")
 
             // Create a connection to the database
-            db = try Connection(fileURL.path)
-            
-//            try db?.run(notesTable.drop(ifExists: true))
+            connection = try Connection(fileURL.path)
+            try connection?.run(notesTable.drop(ifExists: true))
 
             // Create the notes table if it doesn't exist
-            try db?.run(notesTable.create(ifNotExists: true) { t in
+            try connection?.run(notesTable.create(ifNotExists: true) { t in
                 t.column(id, primaryKey: .autoincrement)
                 t.column(subject)
                 t.column(details)
@@ -45,7 +44,7 @@ class DatabaseManager {
                 t.column(status)
             })
         } catch {
-            db = nil
+            connection = nil
             print("Database initialization error: \(error)")
         }
     }
@@ -53,18 +52,38 @@ class DatabaseManager {
 }
 
 extension DatabaseManager {
-    func createNote(title: String, details: String?, dueDate: Date?, location: String?, category: String?, status: NoteStatus) -> Bool {
+    func executeQuery(_ query: String?) {
+        guard let query = query else {
+            print("error invalid query")
+            return
+        }
+        
+        guard let connection = connection else {
+            print("empty connection")
+            return
+        }
+        
+        do {
+            try connection.run(query)
+            
+            print("Query executed successfully.")
+        } catch {
+            print("An error occurred: \(error)")
+        }
+    }
+    
+    func createNote(subject: String, details: String?, dueDate: Date?, location: String?, category: String, status: NoteStatus) -> Bool {
         do {
             let insert = notesTable.insert(
-                self.subject <- title,
+                self.subject <- subject,
                 self.details <- details,
-                self.createDate <- Date(),
-                self.deadline <- dueDate,
+                self.createDate <- createDate,
+                self.deadline <- deadline,
                 self.location <- location,
                 self.category <- category,
                 self.status <- status.rawValue
             )
-            try db?.run(insert)
+            try connection?.run(insert)
             return true
         } catch {
             print("Insert failed: \(error)")
@@ -77,12 +96,11 @@ extension DatabaseManager {
         var notes = [Note]()
 
         do {
-            for note in try db!.prepare(notesTable) {
-                
+            for note in try connection!.prepare(notesTable) {
                 notes.append(Note(id: note[id],
                                   subject: note[subject],
                                   details: note[details],
-                                  createDate: Date(),
+                                  createDate: note[createDate],
                                   deadline: note[deadline],
                                   location: note[location],
                                   category: note[category],
@@ -99,7 +117,7 @@ extension DatabaseManager {
         let note = notesTable.filter(id == noteId)
         do {
             let update = note.update(status <- NoteStatus.finished.rawValue)
-            if try db?.run(update) ?? 0 > 0 {
+            if try connection?.run(update) ?? 0 > 0 {
                 return true
             } else {
                 print("No note was updated")
@@ -116,24 +134,24 @@ extension DatabaseManager {
     func insertSampleNotesIfEmpty() {
         do {
             // Check if the notes table is empty
-            let count = try db?.scalar(notesTable.count) ?? 0
+            let count = try connection?.scalar(notesTable.count) ?? 0
             if count == 0 {
                 // Insert sample notes
-                _ = createNote(title: "Buy Eggs",
+                _ = createNote(subject: "Buy Eggs",
                                details: "Buy two dozen eggs from Costco",
                                dueDate: Date(timeIntervalSinceNow: 48 * 3600), // 2 days from now
                                location: "Costco",
                                category: "Shopping",
                                status: .pending)
 
-                _ = createNote(title: "Truck Height Info",
+                _ = createNote(subject: "Truck Height Info",
                                details: "Truck's height is 6 feet 4 without rack, 7.2 with rack",
                                dueDate: nil,
                                location: nil,
                                category: "Vehicle Info",
                                status: .unknown)
 
-                _ = createNote(title: "Buy Books",
+                _ = createNote(subject: "Buy Books",
                                details: "Buy two books named '5 mins story' from Amazon",
                                dueDate: nil,
                                location: "Amazon",
