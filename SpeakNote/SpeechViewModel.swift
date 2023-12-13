@@ -28,6 +28,9 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     // Relay for the transcribed text, initialized with an empty string.
     let transcribedText = BehaviorRelay<String>(value: "")
     
+    // Relay for the Database records in text, initialized with an empty string.
+    let recordsText = BehaviorRelay<String>(value: "")
+    
     // Relay for the error state, initialized with nil.
     let errorRelay = BehaviorRelay<Error?>(value: nil)
 
@@ -106,9 +109,12 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
             
             let latestMessage = try await assistant.readLatestMessageFromThread()
             
-            if let query = assistant.extractAssistantResponse(from: latestMessage?.content.first?.text?.value)?.query {
+            if let response = assistant.extractAssistantResponse(from: latestMessage?.content.first?.text?.value) {
+                let query = response.query
+                let description = response.description
                 databaseManager.executeQuery(query)
                 let notes = databaseManager.fetchNotes()
+                self.recordsText.accept(description)
                 print(notes)
             } else {
                 print("No SQL query found in the message")

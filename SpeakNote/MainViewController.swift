@@ -13,7 +13,8 @@ import RxCocoa
 class MainViewController: UIViewController {
     let disposeBag = DisposeBag()
 
-    var textView = UITextView()
+    var notesTextView = UITextView()
+    var liveCaptionView = UITextView()
     let audioWaveLayer = CAShapeLayer()
     let buttonSize: CGFloat = 120
     let micButton = UIButton()
@@ -23,22 +24,35 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupTextView()
+        setupNotesTextView()
+        setupLiveCaptionView()
         setupMicButton()
         setupConstraints()
         setupBindings()
         configureAudioWaveLayer()
     }
 
-    func setupTextView() {
-        textView.isEditable = false
-        textView.isSelectable = false
-        textView.backgroundColor = .blue
-        textView.font = UIFont.systemFont(ofSize: 20)
-        textView.textAlignment = .center
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.text = "Press the button and start speaking"
-        view.addSubview(textView)
+    func setupNotesTextView() {
+        notesTextView.isEditable = false
+        notesTextView.isSelectable = false
+        notesTextView.backgroundColor = .lightGray
+        notesTextView.layer.cornerRadius = 20
+        notesTextView.font = UIFont.systemFont(ofSize: 16)
+        notesTextView.textAlignment = .left
+        notesTextView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(notesTextView)
+    }
+
+    func setupLiveCaptionView() {
+        liveCaptionView.isEditable = false
+        liveCaptionView.isSelectable = false
+        liveCaptionView.backgroundColor = .lightGray
+        liveCaptionView.layer.cornerRadius = 20
+        liveCaptionView.font = UIFont.systemFont(ofSize: 20)
+        liveCaptionView.textAlignment = .center
+        liveCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        liveCaptionView.text = "Press the button and start speaking"
+        view.addSubview(liveCaptionView)
     }
 
     func setupMicButton() {
@@ -53,10 +67,16 @@ class MainViewController: UIViewController {
         micButtonBottomConstraint = micButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
 
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            textView.bottomAnchor.constraint(equalTo: micButton.topAnchor, constant: -10),
+            notesTextView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            notesTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            notesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            notesTextView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -10),
+            
+            liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            liveCaptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            liveCaptionView.bottomAnchor.constraint(equalTo: micButton.topAnchor, constant: -10),
+            liveCaptionView.heightAnchor.constraint(equalToConstant: 60),
             
             micButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             micButton.heightAnchor.constraint(equalToConstant: buttonSize),
@@ -71,9 +91,13 @@ class MainViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.transcribedText.asObservable()
-            .bind(to: textView.rx.text)
+            .bind(to: liveCaptionView.rx.text)
             .disposed(by: disposeBag)
-
+        
+        viewModel.recordsText.asObservable()
+            .bind(to: notesTextView.rx.text)
+            .disposed(by: disposeBag)
+    
         viewModel.isListeningRelay
             .asObservable()
             .subscribe(onNext: { [weak self] isListening in
