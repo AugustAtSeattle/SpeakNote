@@ -15,7 +15,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     private let speechManager = SpeechRecognitionManager()
     private let assistant = AssistantClient()
     private let databaseManager = DatabaseManager.shared
-    
+    private let appleSpeechService = AppleSpeechService()
 
     // Relay for the listening state, initialized with `false`.
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
@@ -115,6 +115,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
                 databaseManager.executeQuery(query)
                 let notes = databaseManager.fetchNotes()
                 self.recordsText.accept(description)
+                appleSpeechService.speak(text: description)
                 print(notes)
             } else {
                 print("No SQL query found in the message")
