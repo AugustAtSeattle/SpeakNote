@@ -52,6 +52,11 @@ struct MessageList: Codable {
     }
 }
 
+struct AssistantResponse: Decodable {
+    var query: String
+    let description: String
+}
+
 extension AssistantClient {
     
     func createMessage(messageContent: String) async throws -> Message {
@@ -143,30 +148,20 @@ extension AssistantClient {
         }
     }
     
-    func extractSQLQuery(from jsonString: String?) -> String? {
-        guard let jsonString = jsonString else {
-            return nil 
-        }
-        guard let data = jsonString.data(using: .utf8) else {
-            print("Error: Cannot create Data from jsonString")
+    func extractAssistantResponse(from jsonString: String?) -> AssistantResponse? {
+        guard let jsonString = jsonString,
+              let data = jsonString.data(using: .utf8) else {
             return nil
         }
 
         do {
-            // Parse the JSON data
-            if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String],
-               let query = jsonDict["query"] {
-                // Remove newlines from the query string
-                print("new query", query)
-                let cleanedQuery = query.replacingOccurrences(of: "\\n", with: " ", options: .literal, range: nil)
-                return cleanedQuery
-            } else {
-                print("Error: JSON is not a dictionary")
-            }
+            var assistantResponse = try JSONDecoder().decode(AssistantResponse.self, from: data)
+            assistantResponse.query = assistantResponse.query.replacingOccurrences(of: "\\n", with: " ", options: .literal, range: nil)
+            return assistantResponse
         } catch {
             print("Error: \(error.localizedDescription)")
         }
-
+        
         return nil
     }
     

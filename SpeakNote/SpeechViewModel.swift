@@ -106,7 +106,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
             
             let latestMessage = try await assistant.readLatestMessageFromThread()
             
-            if let query = assistant.extractSQLQuery(from: latestMessage?.content.first?.text?.value) {
+            if let query = assistant.extractAssistantResponse(from: latestMessage?.content.first?.text?.value)?.query {
                 databaseManager.executeQuery(query)
                 let notes = databaseManager.fetchNotes()
                 print(notes)
