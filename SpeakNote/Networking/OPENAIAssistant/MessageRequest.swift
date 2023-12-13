@@ -137,7 +137,7 @@ extension AssistantClient {
             throw AssistantClientError.invalidURL
         }
 
-        let retryPolicy = RetryPolicy(maxAttempts: 1, delayInSeconds: 1)
+        let retryPolicy = RetryPolicy(maxAttempts: 3, delayInSeconds: 1)
         return try await retry(policy: retryPolicy) {
             try await self.attemptToReadLatestMessage(apiKey: apiKey, url: url)
         }
@@ -157,6 +157,7 @@ extension AssistantClient {
             if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String],
                let query = jsonDict["query"] {
                 // Remove newlines from the query string
+                print("new query", query)
                 let cleanedQuery = query.replacingOccurrences(of: "\\n", with: " ", options: .literal, range: nil)
                 return cleanedQuery
             } else {

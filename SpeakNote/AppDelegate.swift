@@ -13,18 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let db = DatabaseManager.shared
-//        db.insertSampleNotesIfEmpty()
-
-        let notes = db.fetchNotes()
-        print(notes)
-        let insertQuery = """
-            INSERT INTO notes (subject, details, createDate, deadline, category, status)
-            VALUES ('Get Birthday Cake', 'Get a birthday cake before 5 PM', '2024-03-15 15:45:30', '2024-03-15 15:45:30', 'Personal', 'Pending');
-        """
-//        dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-//        db.executeQuery(insertQuery)
-        
+        let _ = DatabaseManager.shared        
         return true
     }
 

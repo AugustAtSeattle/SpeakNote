@@ -28,6 +28,14 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     // Relay for the transcribed text, initialized with an empty string.
     let transcribedText = BehaviorRelay<String>(value: "")
     
+    // Relay for the error state, initialized with nil.
+    let errorRelay = BehaviorRelay<Error?>(value: nil)
+
+    // Public computed property to get the current error state.
+    var error: Error? {
+        return errorRelay.value
+    }
+    
     override init() {
         super.init()
         setupSpeechManager()
@@ -39,10 +47,10 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         speechManager.onResult = { [weak self] result in
             self?.transcribedText.accept(result)
         }
-
-        // Optionally, handle errors if your speechManager provides such a callback
-        speechManager.onError = { error in
-            // Handle any errors
+        
+        // Set up the callback for error handling
+        speechManager.onError = { [weak self] error in
+            self?.errorRelay.accept(error)
         }
         
         // Set up the callback for listening status changes
@@ -76,16 +84,37 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
 
 
     func stopListening() {
+        Task {
+            await performQueryHelper()
+        }
         speechManager.stopRecognition()
-        Task{
-            do {
-                let message = try await assistant.readLatestMessageFromThread()
-                let query = assistant.extractSQLQuery(from:message?.content.first?.text?.value)
-                print(query)
-                databaseManager.executeQuery(query)            
-            } catch {
-                print(error)
+
+    }
+
+    func performQueryHelper() async {
+        do {
+            guard !transcribedText.value.isEmpty else {
+                print("Transcribed text is empty")
+                return
             }
+            
+            let messageContent = transcribedText.value
+            let message = try await assistant.createMessage(messageContent: messageContent)
+            let run = try await assistant.createRun()
+            
+            try await Task.sleep(nanoseconds: 10_000_000_000)
+            
+            let latestMessage = try await assistant.readLatestMessageFromThread()
+            
+            if let query = assistant.extractSQLQuery(from: latestMessage?.content.first?.text?.value) {
+                databaseManager.executeQuery(query)
+                let notes = databaseManager.fetchNotes()
+                print(notes)
+            } else {
+                print("No SQL query found in the message")
+            }
+        } catch {
+            print(error)
         }
     }
     

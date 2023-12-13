@@ -21,7 +21,7 @@ struct Note {
     let createDate: String
     let deadline: String?
     let location: String?
-    let category: String?
+    let category: String
     let status: NoteStatus
 }
 

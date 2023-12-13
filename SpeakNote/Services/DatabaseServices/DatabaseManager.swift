@@ -18,7 +18,7 @@ class DatabaseManager {
     private let createDate = Expression<String>("createDate")
     private let deadline = Expression<String?>("deadline")
     private let location = Expression<String?>("location")
-    private let category = Expression<String?>("category")
+    private let category = Expression<String>("category")
     private let status = Expression<String>("status")
 
     private init() {
@@ -30,7 +30,7 @@ class DatabaseManager {
 
             // Create a connection to the database
             connection = try Connection(fileURL.path)
-//            try connection?.run(notesTable.drop(ifExists: true))
+            try connection?.run(notesTable.drop(ifExists: true))
 
             // Create the notes table if it doesn't exist
             try connection?.run(notesTable.create(ifNotExists: true) { t in
@@ -72,7 +72,7 @@ extension DatabaseManager {
         }
     }
     
-    func createNote(subject: String, details: String?, dueDate: Date?, location: String?, category: String?, status: NoteStatus) -> Bool {
+    func createNote(subject: String, details: String?, dueDate: Date?, location: String?, category: String, status: NoteStatus) -> Bool {
         do {
             let insert = notesTable.insert(
                 self.subject <- subject,
