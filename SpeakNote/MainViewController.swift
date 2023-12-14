@@ -112,16 +112,16 @@ class MainViewController: UIViewController {
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                 self.view.layoutIfNeeded()
-            }) { _ in
-                self.startWaveAnimation()
+            }) { [weak self] _ in
+                self?.startWaveAnimation()
             }
         } else {
             micButtonBottomConstraint.constant = -10
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = .identity
                 self.view.layoutIfNeeded()
-            }) { _ in
-                self.stopWaveAnimation()
+            }) { [weak self] _ in
+                self?.stopWaveAnimation()
             }
         }
     }

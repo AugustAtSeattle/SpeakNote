@@ -16,6 +16,7 @@ enum AssistantClientError: Error {
     case decodingError
     case retryLimitReached
     case noMessage
+    case openAIServiceError(message: String)
 }
 
 import Foundation

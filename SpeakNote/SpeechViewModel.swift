@@ -17,7 +17,13 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     private let databaseManager = DatabaseManager.shared
     private let appleSpeechService = AppleSpeechService()
 
-    // Relay for the listening state, initialized with `false`.
+    
+    // Inputs
+//    let toggleListening: AnyObserver<Void>
+    
+    // Outputs
+    let transcribedText = BehaviorRelay<String>(value: "")
+    let recordsText = BehaviorRelay<String>(value: "")
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
     
     // Public computed property to get the current listening state.
@@ -25,18 +31,15 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         return isListeningRelay.value
     }
     
-    // Relay for the transcribed text, initialized with an empty string.
-    let transcribedText = BehaviorRelay<String>(value: "")
-    
-    // Relay for the Database records in text, initialized with an empty string.
-    let recordsText = BehaviorRelay<String>(value: "")
-    
     // Relay for the error state, initialized with nil.
     let errorRelay = BehaviorRelay<Error?>(value: nil)
-
     // Public computed property to get the current error state.
     var error: Error? {
         return errorRelay.value
+    }
+    
+    enum speechViewModelError: Error {
+        case noTranscribedText
     }
     
     override init() {
@@ -93,35 +96,60 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
         speechManager.stopRecognition()
 
     }
-
+    
     func performQueryHelper() async {
         do {
-            guard !transcribedText.value.isEmpty else {
-                print("Transcribed text is empty")
-                return
-            }
-            
-            let messageContent = transcribedText.value
-            let message = try await assistant.createMessage(messageContent: messageContent)
+            let messageContent = try await getMessageContent()
+            _ = try await assistant.createMessage(messageContent: messageContent)
             let run = try await assistant.createRun()
-            
-            try await Task.sleep(nanoseconds: 10_000_000_000)
-            
+            let runStatus = try await checkRunStatus(run: run)
             let latestMessage = try await assistant.readLatestMessageFromThread()
-            
-            if let response = assistant.extractAssistantResponse(from: latestMessage?.content.first?.text?.value) {
-                let query = response.query
-                let description = response.description
-                databaseManager.executeQuery(query)
-                let notes = databaseManager.fetchNotes()
-                self.recordsText.accept(description)
-                appleSpeechService.speak(text: description)
-                print(notes)
-            } else {
-                print("No SQL query found in the message")
-            }
+            await processLatestMessage(latestMessage: latestMessage)
         } catch {
             print(error)
+        }
+    }
+    
+    func getMessageContent() async throws -> String {
+        guard !transcribedText.value.isEmpty else {
+            throw speechViewModelError.noTranscribedText
+        }
+        return transcribedText.value
+    }
+        
+    func checkRunStatus(run: Run) async throws -> RunStatus {
+        var runStatus: RunStatus?
+        repeat {
+            runStatus = try await assistant.getRunStatus(runId: run.id)
+            guard runStatus == .queued ||
+                    runStatus == .inProgress ||
+                    runStatus == .completed else {
+                throw AssistantClientError.openAIServiceError(message: runStatus?.rawValue ?? "Unknown error")
+            }
+            
+            if let status = runStatus, status != .completed {
+                try await Task.sleep(nanoseconds: 1_000_000_000) // sleep for 1 second before next status check
+            }
+        } while runStatus != .completed
+        return runStatus!
+    }
+        
+    func processLatestMessage(latestMessage: Message?) async {
+        guard let latestMessage = latestMessage else {
+            print("No SQL query found in the message")
+            return
+        }
+        
+        if let response = assistant.extractAssistantResponse(from: latestMessage.content.first?.text?.value) {
+            let query = response.query
+            let description = response.description
+            databaseManager.executeQuery(query)
+            let notes = databaseManager.fetchNotes()
+            self.recordsText.accept(description)
+            appleSpeechService.speak(text: description)
+            print(notes)
+        } else {
+            print("No SQL query found in the message")
         }
     }
     
