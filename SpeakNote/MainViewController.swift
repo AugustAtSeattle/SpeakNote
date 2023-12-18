@@ -21,17 +21,11 @@ class MainViewController: MessagesViewController {
     var micButtonBottomConstraint: NSLayoutConstraint!
     let viewModel = SpeechViewModel()
 
-    // Sample data
-    var messages: [MessageType] = []
-    let currentSender: SenderType = Sender(senderId: "user1", displayName: "User")
-    let assistant: SenderType = Sender(senderId: "assistant", displayName: "Assistant")
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = AppColors.secondaryGreen
 
-        loadMessages()
         setupMessagesCollectionView()
         setupLiveCaptionView()
         setupMicButton()
@@ -132,6 +126,12 @@ override func viewDidLayoutSubviews() {
                 self?.animateMicButton(isListening: isListening)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.messages.asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                self?.messagesCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
 
     func animateMicButton(isListening: Bool) {
@@ -201,27 +201,27 @@ override func viewDidLayoutSubviews() {
 
 // MARK: - MessagesDataSource
 extension MainViewController: MessagesDataSource {
+    var currentSender: MessageKit.SenderType {
+        return viewModel.currentSender
+    }
+    
+    var assignedSender: MessageKit.SenderType {
+        return viewModel.assistantSender
+    }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
-        return messages[indexPath.section]
+        return viewModel.messages.value[indexPath.section]  // Access the value of BehaviorRelay
     }
     
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
-        return messages.count
+        return viewModel.messages.value.count  // Access the value of BehaviorRelay
     }
     
-    // Load some sample messages
-    func loadMessages() {
-        let message1: MessageType = Message(sender: Sender(senderId: "user1", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("buy two eggs from Costco"))
-        let message2: MessageType = Message(sender: Sender(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will buy two eggs from Costco"))
-        let message3: MessageType = Message(sender: Sender(senderId: "user1", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("have a meetting tomorrow 10"))
-        let message4: MessageType = Message(sender: Sender(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will have a meeting tomorrow at 10 am"))
-        
-        messages = [message1, message2, message3, message4]
-        self.messagesCollectionView.reloadData()
+    func messageTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let name = message.sender.displayName
+        return NSAttributedString(string: name, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1)])
     }
 }
-
 
 // MARK: - MessagesLayoutDelegate and MessagesDisplayDelegate
 extension MainViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
@@ -230,28 +230,13 @@ extension MainViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
         // For instance, if you have a User model with a profileImageURL property:
         if message.sender.senderId == currentSender.senderId {
             avatarView.set(avatar: Avatar(image: UIImage(named: "currentUserProfileImage"), initials: "U"))
-        } else if message.sender.senderId == assistant.senderId {
+        } else if message.sender.senderId == assignedSender.senderId {
             avatarView.set(avatar: Avatar(image: UIImage(named: "assistantProfileImage"), initials: "B"))
         }
     }
     
     func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
         return CGSize(width: 30, height: 30) // You can adjust this value to suit your needs.
-    }
-}
-
-// Extend MessageKit types for creating sample messages
-extension MainViewController {
-    struct Sender: SenderType {
-        var senderId: String
-        var displayName: String
-    }
-    
-    struct Message: MessageType {
-        var sender: SenderType
-        var messageId: String
-        var sentDate: Date
-        var kind: MessageKind
     }
 }
 

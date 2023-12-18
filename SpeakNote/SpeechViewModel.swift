@@ -9,22 +9,38 @@ import Foundation
 import Speech
 import RxSwift
 import RxCocoa
+import MessageKit
 
-class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
+struct SenderViewModel: SenderType {
+    var senderId: String
+    var displayName: String
+}
+
+struct MessageViewModel: MessageType {
+    var sender: SenderType
+    var messageId: String
+    var sentDate: Date
+    var kind: MessageKind
+}
+
+class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     private let disposeBag = DisposeBag()
     private let speechManager = SpeechRecognitionManager()
     private let assistant = AssistantClient()
     private let databaseManager = DatabaseManager.shared
     private let appleSpeechService = AppleSpeechService()
 
-    
     // Inputs
-//    let toggleListening: AnyObserver<Void>
-    
+    // let toggleListening: AnyObserver<Void>
+
     // Outputs
     let transcribedText = BehaviorRelay<String>(value: "")
     let recordsText = BehaviorRelay<String>(value: "")
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
+    let messages = BehaviorRelay<[MessageType]>(value: [])
+
+    let currentSender: SenderType = SenderViewModel(senderId: "user", displayName: "User")
+    let assistantSender: SenderType = SenderViewModel(senderId: "assistant", displayName: "Assistant")
     
     // Public computed property to get the current listening state.
     var isListening: Bool {
@@ -45,6 +61,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
     override init() {
         super.init()
         setupSpeechManager()
+        loadMessages()
     }
 
     private func setupSpeechManager() {
@@ -152,6 +169,17 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate  {
             print("No SQL query found in the message")
         }
     }
+    
+    // Load some sample messages
+    func loadMessages() {
+        let message1: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("buy two eggs from Costco"))
+        let message2: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will buy two eggs from Costco"))
+        let message3: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("have a meetting tomorrow 10"))
+        let message4: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will have a meeting tomorrow at 10 am"))
+
+        messages.accept([message1, message2, message3, message4]) // Changed to use .accept() method of BehaviorRelay
+    }
+    
     
     func requestSpeechAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
         requestSpeechRecognitionPermission { speechGranted in
