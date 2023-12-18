@@ -8,6 +8,10 @@
 import Foundation
 import SQLite
 
+enum QueryError: Error {
+    case invalidQuery
+}
+
 class DatabaseManager {
     static let shared = DatabaseManager()
     public var connection: Connection?

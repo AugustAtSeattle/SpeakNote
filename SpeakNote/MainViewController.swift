@@ -9,11 +9,11 @@ import UIKit
 import Speech
 import RxSwift
 import RxCocoa
+import MessageKit
 
-class MainViewController: UIViewController {
+class MainViewController: MessagesViewController {
     let disposeBag = DisposeBag()
 
-    var notesTextView = UITextView()
     var liveCaptionView = UITextView()
     let audioWaveLayer = CAShapeLayer()
     let buttonSize: CGFloat = 120
@@ -21,26 +21,63 @@ class MainViewController: UIViewController {
     var micButtonBottomConstraint: NSLayoutConstraint!
     let viewModel = SpeechViewModel()
 
+    // Sample data
+    var messages: [MessageType] = []
+    let currentSender: SenderType = Sender(senderId: "user1", displayName: "User")
+    let assistant: SenderType = Sender(senderId: "assistant", displayName: "Assistant")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNotesTextView()
+        loadMessages()
+        setupMessagesCollectionView()
         setupLiveCaptionView()
         setupMicButton()
         setupConstraints()
         setupBindings()
         configureAudioWaveLayer()
+        
+//        setupImageView()
+        setTypingIndicatorViewHidden(false, animated: true)
     }
+    
+    func setupMessagesCollectionView() {
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.backgroundColor = UIColor(hex: "b3d4a1")
+        self.view.backgroundColor = UIColor(hex: "1d4a04")
 
-    func setupNotesTextView() {
-        notesTextView.isEditable = false
-        notesTextView.isSelectable = false
-        notesTextView.backgroundColor = .lightGray
-        notesTextView.layer.cornerRadius = 20
-        notesTextView.font = UIFont.systemFont(ofSize: 16)
-        notesTextView.textAlignment = .left
-        notesTextView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(notesTextView)
+        messageInputBar.isHidden = true
+        messagesCollectionView.layer.borderColor = UIColor.black.cgColor
+        messagesCollectionView.layer.borderWidth = 2.0
+        
+        messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        messagesCollectionView.layer.masksToBounds = true
+        messagesCollectionView.layer.cornerRadius = 30
+        messagesCollectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
+    }
+        
+    func setupImageView() {
+        let microphoneButton = UIButton()
+        microphoneButton.translatesAutoresizingMaskIntoConstraints = false
+
+        self.view.addSubview(microphoneButton) // Add this line before setting constraints
+
+        NSLayoutConstraint.activate([
+            microphoneButton.widthAnchor.constraint(equalToConstant: 100),
+            microphoneButton.heightAnchor.constraint(equalToConstant: 100),
+            microphoneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            microphoneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
+        ])
+
+        microphoneButton.setImage(UIImage(named: "microphone"), for: .normal)
+        microphoneButton.setImage(UIImage(named: "microphone_selected"), for: .selected)
+        microphoneButton.addTarget(self, action: #selector(microphoneButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func microphoneButtonTapped() {
+        print("Microphone button tapped!")
     }
 
     func setupLiveCaptionView() {
@@ -65,12 +102,12 @@ class MainViewController: UIViewController {
 
     func setupConstraints() {
         micButtonBottomConstraint = micButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
-
+        
         NSLayoutConstraint.activate([
-            notesTextView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            notesTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            notesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            notesTextView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -10),
+            messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            messagesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            messagesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            messagesCollectionView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -10),
             
             liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -94,9 +131,9 @@ class MainViewController: UIViewController {
             .bind(to: liveCaptionView.rx.text)
             .disposed(by: disposeBag)
         
-        viewModel.recordsText.asObservable()
-            .bind(to: notesTextView.rx.text)
-            .disposed(by: disposeBag)
+//        viewModel.recordsText.asObservable()
+//            .bind(to: notesTextView.rx.text)
+//            .disposed(by: disposeBag)
     
         viewModel.isListeningRelay
             .asObservable()
@@ -168,4 +205,84 @@ class MainViewController: UIViewController {
         audioWaveLayer.path = path.cgPath
     }
 
+}
+
+
+// MARK: - MessagesDataSource
+extension MainViewController: MessagesDataSource {
+    
+    func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
+        return messages[indexPath.section]
+    }
+    
+    func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
+        return messages.count
+    }
+    
+    // Load some sample messages
+    func loadMessages() {
+        let message1: MessageType = Message(sender: Sender(senderId: "user1", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("buy two eggs from Costco"))
+        let message2: MessageType = Message(sender: Sender(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will buy two eggs from Costco"))
+        let message3: MessageType = Message(sender: Sender(senderId: "user1", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("have a meetting tomorrow 10"))
+        let message4: MessageType = Message(sender: Sender(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will have a meeting tomorrow at 10 am"))
+        
+        messages = [message1, message2, message3, message4]
+        self.messagesCollectionView.reloadData()
+    }
+}
+
+
+// MARK: - MessagesLayoutDelegate and MessagesDisplayDelegate
+extension MainViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        // Here, you can set image for avatarView based on the sender. You can fetch image for sender from your User model.
+        // For instance, if you have a User model with a profileImageURL property:
+        if message.sender.senderId == currentSender.senderId {
+            avatarView.set(avatar: Avatar(image: UIImage(named: "currentUserProfileImage"), initials: "U"))
+        } else if message.sender.senderId == assistant.senderId {
+            avatarView.set(avatar: Avatar(image: UIImage(named: "assistantProfileImage"), initials: "B"))
+        }
+    }
+    
+    func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
+        return CGSize(width: 30, height: 30) // You can adjust this value to suit your needs.
+    }
+}
+
+// Extend MessageKit types for creating sample messages
+extension MainViewController {
+    struct Sender: SenderType {
+        var senderId: String
+        var displayName: String
+    }
+    
+    struct Message: MessageType {
+        var sender: SenderType
+        var messageId: String
+        var sentDate: Date
+        var kind: MessageKind
+    }
+}
+
+
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+
+        var rgbValue: UInt64 = 0
+
+        scanner.scanHexInt64(&rgbValue)
+
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff,
+            alpha: 1
+        )
+    }
 }
