@@ -106,9 +106,12 @@ class MainViewController: MessagesViewController {
             micButton.widthAnchor.constraint(equalToConstant: buttonSize),
             micButtonBottomConstraint
         ])
-        
-//        messagesCollectionView.frame = CGRect(x: messagesCollectionView.frame.origin.x, y: messagesCollectionView.frame.origin.y + 100, width: messagesCollectionView.frame.size.width, height: messagesCollectionView.frame.size.height)
     }
+    
+override func viewDidLayoutSubviews() {
+    // this is a hack to fix the messageCollectionView's frame being set to the full screen
+    messagesCollectionView.frame = CGRect(x: messagesCollectionView.frame.origin.x, y: messagesCollectionView.frame.origin.y + 100, width: messagesCollectionView.frame.size.width, height: messagesCollectionView.frame.size.height - 100)
+}
 
     func setupBindings() {
         micButton.rx.tap
