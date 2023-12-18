@@ -32,7 +32,6 @@ class MainViewController: MessagesViewController {
         setupConstraints()
         setupBindings()
         configureAudioWaveLayer()
-        setTypingIndicatorViewHidden(false, animated: true)
     }
     
     func setupMessagesCollectionView() {
@@ -129,7 +128,9 @@ override func viewDidLayoutSubviews() {
         
         viewModel.messages.asObservable()
             .subscribe(onNext: { [weak self] _ in
-                self?.messagesCollectionView.reloadData()
+                DispatchQueue.main.async {
+                    self?.messagesCollectionView.reloadData()
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -137,6 +138,7 @@ override func viewDidLayoutSubviews() {
     func animateMicButton(isListening: Bool) {
         if isListening {
 //            micButtonBottomConstraint.constant = -70 // 60 points up + 10 original margin
+//            setTypingIndicatorViewHidden(false, animated: true)
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                 self.view.layoutIfNeeded()
@@ -145,6 +147,7 @@ override func viewDidLayoutSubviews() {
             }
         } else {
 //            micButtonBottomConstraint.constant = -10
+//            setTypingIndicatorViewHidden(false, animated: false)
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = .identity
                 self.view.layoutIfNeeded()

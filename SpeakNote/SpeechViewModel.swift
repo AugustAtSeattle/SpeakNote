@@ -61,7 +61,6 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     override init() {
         super.init()
         setupSpeechManager()
-        loadMessages()
     }
 
     private func setupSpeechManager() {
@@ -131,6 +130,12 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         guard !transcribedText.value.isEmpty else {
             throw speechViewModelError.noTranscribedText
         }
+        
+        let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(transcribedText.value))
+        var currentMessages = messages.value
+        currentMessages.append(message)
+        messages.accept(currentMessages)
+
         return transcribedText.value
     }
         
@@ -164,6 +169,12 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             let notes = databaseManager.fetchNotes()
             self.recordsText.accept(description)
             appleSpeechService.speak(text: description)
+            
+            let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(description))
+            var currentMessages = messages.value
+            currentMessages.append(message)
+            messages.accept(currentMessages)
+            
             print(notes)
         } else {
             print("No SQL query found in the message")
