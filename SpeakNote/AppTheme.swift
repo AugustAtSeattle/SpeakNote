@@ -10,20 +10,23 @@ import Foundation
 import UIKit
 
 struct AppColors {    
-    static let primaryGreen = UIColor(hex: "b3d4a1")
-    static let secondaryGreen = UIColor(hex: "1d4a04")
+    static let primaryGreen = UIColor(hex: "4ba885")
+    static let secondaryGreen = UIColor(hex: "025b4e")
+    static let thirdGreen = UIColor(hex: "005831")
+    static let borderColor = UIColor(hex: "005b4a").cgColor
 }
 
 struct AppLayout {
     static let leadingConstant: CGFloat = 30
     static let trailingConstant: CGFloat = -30
+    static let borderWidth: CGFloat = 3.0
 }
 
 
 extension UIColor {
     convenience init(hex: String) {
         let scanner = Scanner(string: hex)
-        scanner.scanLocation = 0
+        scanner.currentIndex = scanner.string.startIndex
 
         var rgbValue: UInt64 = 0
 

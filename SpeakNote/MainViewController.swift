@@ -48,8 +48,8 @@ class MainViewController: MessagesViewController {
         messagesCollectionView.backgroundColor = AppColors.primaryGreen
 
         messageInputBar.isHidden = true
-        messagesCollectionView.layer.borderColor = UIColor.black.cgColor
-        messagesCollectionView.layer.borderWidth = 2.0
+        messagesCollectionView.layer.borderColor = AppColors.borderColor
+        messagesCollectionView.layer.borderWidth = AppLayout.borderWidth
         
         messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         messagesCollectionView.layer.masksToBounds = true
@@ -65,6 +65,8 @@ class MainViewController: MessagesViewController {
         liveCaptionView.isEditable = false
         liveCaptionView.isSelectable = false
         liveCaptionView.backgroundColor = AppColors.primaryGreen
+        liveCaptionView.layer.borderColor = AppColors.borderColor
+        liveCaptionView.layer.borderWidth = AppLayout.borderWidth
         liveCaptionView.layer.cornerRadius = 20
         liveCaptionView.font = UIFont.systemFont(ofSize: 30)
         liveCaptionView.textAlignment = .center
@@ -76,6 +78,8 @@ class MainViewController: MessagesViewController {
     func setupMicButton() {
         micButton.setImage(UIImage(named: "mic_icon"), for: .normal)
         micButton.translatesAutoresizingMaskIntoConstraints = false
+        micButton.layer.borderColor = AppColors.borderColor
+        micButton.layer.borderWidth = AppLayout.borderWidth
         micButton.layer.cornerRadius = buttonSize / 2
         micButton.clipsToBounds = true
         view.addSubview(micButton)
@@ -84,12 +88,10 @@ class MainViewController: MessagesViewController {
     func setupConstraints() {
         micButtonBottomConstraint = micButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         
-//        messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//        let topConstraint = messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
-//        topConstraint.isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            messagesCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            messagesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             messagesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppLayout.leadingConstant),
             messagesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: AppLayout.trailingConstant),
             messagesCollectionView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -40),
