@@ -37,6 +37,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     let transcribedText = BehaviorRelay<String>(value: "")
     let recordsText = BehaviorRelay<String>(value: "")
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
+    let isLoadingFromServerRelay = BehaviorRelay<Bool>(value: false)
     let messages = BehaviorRelay<[MessageType]>(value: [])
 
     let currentSender: SenderType = SenderViewModel(senderId: "user", displayName: "User")
@@ -110,7 +111,6 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             await performQueryHelper()
         }
         speechManager.stopRecognition()
-
     }
     
     func performQueryHelper() async {
@@ -122,6 +122,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             let latestMessage = try await assistant.readLatestMessageFromThread()
             await processLatestMessage(latestMessage: latestMessage)
         } catch {
+            isLoadingFromServerRelay.accept(false)
             print(error)
         }
     }
@@ -135,6 +136,8 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         var currentMessages = messages.value
         currentMessages.append(message)
         messages.accept(currentMessages)
+        
+        isLoadingFromServerRelay.accept(true)
 
         return transcribedText.value
     }
@@ -175,6 +178,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             currentMessages.append(message)
             messages.accept(currentMessages)
             
+            isLoadingFromServerRelay.accept(false)
             print(notes)
         } else {
             print("No SQL query found in the message")

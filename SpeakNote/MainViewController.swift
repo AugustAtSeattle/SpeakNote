@@ -133,12 +133,24 @@ override func viewDidLayoutSubviews() {
                 }
             })
             .disposed(by: disposeBag)
+        
+        viewModel.isLoadingFromServerRelay
+            .asObservable()
+            .subscribe(onNext: { [weak self] isLoadingFromServer in
+                DispatchQueue.main.async {
+                    if isLoadingFromServer {
+                        self?.setTypingIndicatorViewHidden(false, animated: true)
+                    } else {
+                        self?.setTypingIndicatorViewHidden(true, animated: true)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     func animateMicButton(isListening: Bool) {
         if isListening {
 //            micButtonBottomConstraint.constant = -70 // 60 points up + 10 original margin
-//            setTypingIndicatorViewHidden(false, animated: true)
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                 self.view.layoutIfNeeded()
@@ -147,7 +159,6 @@ override func viewDidLayoutSubviews() {
             }
         } else {
 //            micButtonBottomConstraint.constant = -10
-//            setTypingIndicatorViewHidden(false, animated: false)
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = .identity
                 self.view.layoutIfNeeded()
