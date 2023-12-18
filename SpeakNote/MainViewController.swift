@@ -61,10 +61,12 @@ class MainViewController: MessagesViewController {
         liveCaptionView.layer.borderColor = AppColors.borderColor
         liveCaptionView.layer.borderWidth = AppLayout.borderWidth
         liveCaptionView.layer.cornerRadius = 20
-        liveCaptionView.font = UIFont.systemFont(ofSize: 30)
+        liveCaptionView.font = UIFont.systemFont(ofSize: 25)
+        liveCaptionView.textColor = .white
         liveCaptionView.textAlignment = .center
+        liveCaptionView.textContainer.maximumNumberOfLines = 2
+        liveCaptionView.textContainer.lineBreakMode = .byTruncatingTail
         liveCaptionView.translatesAutoresizingMaskIntoConstraints = false
-        liveCaptionView.text = "Press the button and start speaking"
         view.addSubview(liveCaptionView)
     }
 
@@ -92,7 +94,7 @@ class MainViewController: MessagesViewController {
             liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppLayout.leadingConstant),
             liveCaptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: AppLayout.trailingConstant),
             liveCaptionView.bottomAnchor.constraint(equalTo: micButton.topAnchor, constant: -40),
-            liveCaptionView.heightAnchor.constraint(equalToConstant: 60),
+            liveCaptionView.heightAnchor.constraint(equalToConstant: 80),
             
             micButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             micButton.heightAnchor.constraint(equalToConstant: buttonSize),

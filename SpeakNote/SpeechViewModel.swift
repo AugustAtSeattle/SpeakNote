@@ -34,7 +34,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     // let toggleListening: AnyObserver<Void>
 
     // Outputs
-    let transcribedText = BehaviorRelay<String>(value: "")
+    let transcribedText = BehaviorRelay<String>(value: "Press the button and start speaking")
     let recordsText = BehaviorRelay<String>(value: "")
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
     let isLoadingFromServerRelay = BehaviorRelay<Bool>(value: false)
