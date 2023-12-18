@@ -13,15 +13,14 @@ struct AppColors {
     static let primaryGreen = UIColor(hex: "4ba885")
     static let secondaryGreen = UIColor(hex: "025b4e")
     static let thirdGreen = UIColor(hex: "005831")
-    static let borderColor = UIColor(hex: "005b4a").cgColor
+    static let borderColor = UIColor.black.cgColor //UIColor(hex: "005b4a").cgColor
 }
 
 struct AppLayout {
     static let leadingConstant: CGFloat = 30
     static let trailingConstant: CGFloat = -30
-    static let borderWidth: CGFloat = 3.0
+    static let borderWidth: CGFloat = 1.0
 }
-
 
 extension UIColor {
     convenience init(hex: String) {
