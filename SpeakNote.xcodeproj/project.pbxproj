@@ -43,6 +43,7 @@
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 		CC79A8002B2F8E9F006F1EB9 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC79A7FF2B2F8E9F006F1EB9 /* MessageKit */; };
+		CC79A8022B2FE878006F1EB9 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC79A8012B2FE878006F1EB9 /* AppTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		CC59DB672B2517D4008AFC2F /* RunRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRequest.swift; sourceTree = "<group>"; };
 		CC59DB692B251A4E008AFC2F /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
 		CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechService.swift; sourceTree = "<group>"; };
+		CC79A8012B2FE878006F1EB9 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 				CC2F768A2B184C9D00C27D1A /* Services */,
 				CC59DB512B1A9DC1008AFC2F /* Networking */,
 				CC17DC302B1539AB0084679B /* Main.storyboard */,
+				CC79A8012B2FE878006F1EB9 /* AppTheme.swift */,
 				CC17DC332B1539AB0084679B /* Assets.xcassets */,
 				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
 				CC17DC382B1539AB0084679B /* Info.plist */,
@@ -398,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC79A8022B2FE878006F1EB9 /* AppTheme.swift in Sources */,
 				CC59DB642B25174C008AFC2F /* AssistantRequest.swift in Sources */,
 				CC2F76942B19665200C27D1A /* AppleSpeechRecognitionService.swift in Sources */,
 				CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */,

@@ -29,6 +29,8 @@ class MainViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = AppColors.secondaryGreen
+
         loadMessages()
         setupMessagesCollectionView()
         setupLiveCaptionView()
@@ -36,8 +38,6 @@ class MainViewController: MessagesViewController {
         setupConstraints()
         setupBindings()
         configureAudioWaveLayer()
-        
-//        setupImageView()
         setTypingIndicatorViewHidden(false, animated: true)
     }
     
@@ -45,8 +45,7 @@ class MainViewController: MessagesViewController {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
-        messagesCollectionView.backgroundColor = UIColor(hex: "b3d4a1")
-        self.view.backgroundColor = UIColor(hex: "1d4a04")
+        messagesCollectionView.backgroundColor = AppColors.primaryGreen
 
         messageInputBar.isHidden = true
         messagesCollectionView.layer.borderColor = UIColor.black.cgColor
@@ -57,25 +56,7 @@ class MainViewController: MessagesViewController {
         messagesCollectionView.layer.cornerRadius = 30
         messagesCollectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
     }
-        
-    func setupImageView() {
-        let microphoneButton = UIButton()
-        microphoneButton.translatesAutoresizingMaskIntoConstraints = false
-
-        self.view.addSubview(microphoneButton) // Add this line before setting constraints
-
-        NSLayoutConstraint.activate([
-            microphoneButton.widthAnchor.constraint(equalToConstant: 100),
-            microphoneButton.heightAnchor.constraint(equalToConstant: 100),
-            microphoneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            microphoneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
-        ])
-
-        microphoneButton.setImage(UIImage(named: "microphone"), for: .normal)
-        microphoneButton.setImage(UIImage(named: "microphone_selected"), for: .selected)
-        microphoneButton.addTarget(self, action: #selector(microphoneButtonTapped), for: .touchUpInside)
-    }
-    
+            
     @objc func microphoneButtonTapped() {
         print("Microphone button tapped!")
     }
@@ -83,9 +64,9 @@ class MainViewController: MessagesViewController {
     func setupLiveCaptionView() {
         liveCaptionView.isEditable = false
         liveCaptionView.isSelectable = false
-        liveCaptionView.backgroundColor = .lightGray
+        liveCaptionView.backgroundColor = AppColors.primaryGreen
         liveCaptionView.layer.cornerRadius = 20
-        liveCaptionView.font = UIFont.systemFont(ofSize: 20)
+        liveCaptionView.font = UIFont.systemFont(ofSize: 30)
         liveCaptionView.textAlignment = .center
         liveCaptionView.translatesAutoresizingMaskIntoConstraints = false
         liveCaptionView.text = "Press the button and start speaking"
@@ -103,16 +84,19 @@ class MainViewController: MessagesViewController {
     func setupConstraints() {
         micButtonBottomConstraint = micButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         
+//        messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+//        let topConstraint = messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
+//        topConstraint.isActive = true
+        
         NSLayoutConstraint.activate([
-            messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            messagesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            messagesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            messagesCollectionView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -10),
+            messagesCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            messagesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppLayout.leadingConstant),
+            messagesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: AppLayout.trailingConstant),
+            messagesCollectionView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -40),
             
-            liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            liveCaptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            liveCaptionView.bottomAnchor.constraint(equalTo: micButton.topAnchor, constant: -10),
+            liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppLayout.leadingConstant),
+            liveCaptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: AppLayout.trailingConstant),
+            liveCaptionView.bottomAnchor.constraint(equalTo: micButton.topAnchor, constant: -40),
             liveCaptionView.heightAnchor.constraint(equalToConstant: 60),
             
             micButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -120,6 +104,8 @@ class MainViewController: MessagesViewController {
             micButton.widthAnchor.constraint(equalToConstant: buttonSize),
             micButtonBottomConstraint
         ])
+        
+//        messagesCollectionView.frame = CGRect(x: messagesCollectionView.frame.origin.x, y: messagesCollectionView.frame.origin.y + 100, width: messagesCollectionView.frame.size.width, height: messagesCollectionView.frame.size.height)
     }
 
     func setupBindings() {
@@ -145,7 +131,7 @@ class MainViewController: MessagesViewController {
 
     func animateMicButton(isListening: Bool) {
         if isListening {
-            micButtonBottomConstraint.constant = -70 // 60 points up + 10 original margin
+//            micButtonBottomConstraint.constant = -70 // 60 points up + 10 original margin
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                 self.view.layoutIfNeeded()
@@ -153,7 +139,7 @@ class MainViewController: MessagesViewController {
                 self?.startWaveAnimation()
             }
         } else {
-            micButtonBottomConstraint.constant = -10
+//            micButtonBottomConstraint.constant = -10
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = .identity
                 self.view.layoutIfNeeded()
@@ -264,25 +250,3 @@ extension MainViewController {
     }
 }
 
-
-extension UIColor {
-    convenience init(hex: String) {
-        let scanner = Scanner(string: hex)
-        scanner.scanLocation = 0
-
-        var rgbValue: UInt64 = 0
-
-        scanner.scanHexInt64(&rgbValue)
-
-        let r = (rgbValue & 0xff0000) >> 16
-        let g = (rgbValue & 0xff00) >> 8
-        let b = rgbValue & 0xff
-
-        self.init(
-            red: CGFloat(r) / 0xff,
-            green: CGFloat(g) / 0xff,
-            blue: CGFloat(b) / 0xff,
-            alpha: 1
-        )
-    }
-}
