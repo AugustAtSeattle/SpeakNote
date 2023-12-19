@@ -62,6 +62,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     override init() {
         super.init()
         setupSpeechManager()
+//        loadMessages()
     }
 
     private func setupSpeechManager() {
