@@ -245,9 +245,9 @@ extension MainViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
         // Here, you can set image for avatarView based on the sender. You can fetch image for sender from your User model.
         // For instance, if you have a User model with a profileImageURL property:
         if message.sender.senderId == currentSender.senderId {
-            avatarView.set(avatar: Avatar(image: UIImage(named: "currentUserProfileImage"), initials: "U"))
+            avatarView.set(avatar: Avatar(image: UIImage(named: "user_profile"), initials: "U"))
         } else if message.sender.senderId == assignedSender.senderId {
-            avatarView.set(avatar: Avatar(image: UIImage(named: "assistantProfileImage"), initials: "B"))
+            avatarView.set(avatar: Avatar(image: UIImage(named: "assistant_profile"), initials: "B"))
         }
     }
     
