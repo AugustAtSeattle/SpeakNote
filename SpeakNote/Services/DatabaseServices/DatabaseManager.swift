@@ -133,30 +133,14 @@ extension DatabaseManager {
         let statement = try connection.prepare(query)
         
         var result = ""
-        // Iterate through each row in the result
+        // Iterate through each row in the result (though there should be only one row due to the LIMIT 1)
         for row in statement {
-            // Assuming the order of columns in the SELECT statement matches the table schema
-            let idValue = row[0] as? Int64 ?? 0
-            let subjectValue = row[1] as? String ?? "No subject"
-            let detailsValue = row[2] as? String ?? "No details"
-            let createDateValue = row[3] as? String ?? "Unknown create date"
-            let deadlineValue = row[4] as? String ?? "No deadline"
-            let locationValue = row[5] as? String ?? "No location"
-            let categoryValue = row[6] as? String ?? "No category"
-            let statusValue = row[7] as? String ?? "No status"
-
-            print("""
-                  ID: \(idValue), Subject: \(subjectValue),
-                  Details: \(detailsValue), Create Date: \(createDateValue),
-                  Deadline: \(deadlineValue), Location: \(locationValue),
-                  Category: \(categoryValue), Status: \(statusValue)
-                  """)
-            
-            result += detailsValue
+            // Safely access the 'details' column
+            let detailsValue = row.count > 0 ? (row[0] as? String ?? "Not found") : "Not found"
+            result += "\(detailsValue)\n"
         }
 
         return result
-        print("SELECT query executed successfully.")
     }
 
     func executeInsert(query: String) throws {
