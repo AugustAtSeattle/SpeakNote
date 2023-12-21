@@ -35,7 +35,6 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
 
     // Outputs
     let transcribedText = BehaviorRelay<String>(value: "Press the button and start speaking")
-    let recordsText = BehaviorRelay<String>(value: "")
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
     let isLoadingFromServerRelay = BehaviorRelay<Bool>(value: false)
     let messages = BehaviorRelay<[MessageType]>(value: [])
@@ -168,19 +167,16 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         
         if let response = assistant.extractAssistantResponse(from: latestMessage.content.first?.text?.value) {
             let query = response.query
-            let description = response.description
-            try databaseManager.executeQuery(query)
-            let notes = databaseManager.fetchNotes()
-            self.recordsText.accept(description)
+            let queryResult = try databaseManager.executeQuery(query)
+            let description = queryResult.QueryType != .select ? response.description : (queryResult.Result ?? "No results found")
             appleSpeechService.speak(text: description)
-            
             let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(description))
             var currentMessages = messages.value
             currentMessages.append(message)
             messages.accept(currentMessages)
-            
+            //                let notes = databaseManager.fetchNotes()
+            //                print(notes)
             isLoadingFromServerRelay.accept(false)
-            print(notes)
         } else {
             print("No SQL query found in the message")
         }

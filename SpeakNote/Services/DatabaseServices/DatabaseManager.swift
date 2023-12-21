@@ -12,6 +12,15 @@ enum QueryError: Error {
     case invalidQuery
     case connectionError
     case executionError
+    case otherError
+}
+
+enum QueryType {
+    case select
+    case insert
+    case update
+    case delete
+    case other
 }
 
 class DatabaseManager {
@@ -59,19 +68,15 @@ class DatabaseManager {
 
 extension DatabaseManager {
 
-    func executeQuery(_ query: String?) throws {
-        // Check if the query is not nil and not empty
+    func executeQuery(_ query: String?) throws -> (QueryType: QueryType, Result: String?) {
         guard let query = query, !query.isEmpty else {
-            print("Query is nil or empty.",query)
             throw QueryError.invalidQuery
         }
 
-        // Check if the connection is available
         guard let connection = connection else {
             throw QueryError.connectionError
         }
 
-        // Sanity check: Query special characters
         if containsDangerousCharacters(query) {
             throw QueryError.invalidQuery
         }
@@ -81,13 +86,101 @@ extension DatabaseManager {
             throw QueryError.invalidQuery
         }
 
+        let queryType = determineQueryType(query: query)
+        var result:String? = nil
         do {
-            try connection.run(query)
-            print("Query executed successfully.")
+            switch queryType {
+            case .select:
+                result = try executeSelect(query: query)
+            case .insert:
+                try executeInsert(query: query)
+            case .update:
+                try executeUpdate(query: query)
+            case .delete:
+                try executeDelete(query: query)
+            default:
+                throw QueryError.otherError
+            }
+            return (queryType, result)
         } catch {
             throw QueryError.executionError
         }
     }
+
+    
+    
+    func determineQueryType(query: String) -> QueryType {
+        let lowercasedQuery = query.lowercased()
+
+        if lowercasedQuery.hasPrefix("select") {
+            return .select
+        } else if lowercasedQuery.hasPrefix("insert") {
+            return .insert
+        } else if lowercasedQuery.hasPrefix("update") {
+            return .update
+        } else if lowercasedQuery.hasPrefix("delete") {
+            return .delete
+        } else {
+            return .other
+        }
+    }
+    
+    func executeSelect(query: String) throws -> String {
+        guard let connection = self.connection else {
+            throw QueryError.connectionError
+        }
+
+        let statement = try connection.prepare(query)
+        
+        var result = ""
+        // Iterate through each row in the result
+        for row in statement {
+            // Assuming the order of columns in the SELECT statement matches the table schema
+            let idValue = row[0] as? Int64 ?? 0
+            let subjectValue = row[1] as? String ?? "No subject"
+            let detailsValue = row[2] as? String ?? "No details"
+            let createDateValue = row[3] as? String ?? "Unknown create date"
+            let deadlineValue = row[4] as? String ?? "No deadline"
+            let locationValue = row[5] as? String ?? "No location"
+            let categoryValue = row[6] as? String ?? "No category"
+            let statusValue = row[7] as? String ?? "No status"
+
+            print("""
+                  ID: \(idValue), Subject: \(subjectValue),
+                  Details: \(detailsValue), Create Date: \(createDateValue),
+                  Deadline: \(deadlineValue), Location: \(locationValue),
+                  Category: \(categoryValue), Status: \(statusValue)
+                  """)
+            
+            result += detailsValue
+        }
+
+        return result
+        print("SELECT query executed successfully.")
+    }
+
+    func executeInsert(query: String) throws {
+        guard let connection = self.connection else {
+            throw QueryError.connectionError
+        }
+
+        let statement = try connection.run(query)
+        print("INSERT query executed successfully.")
+    }
+
+
+    func executeUpdate(query: String) throws {
+        // Logic for executing UPDATE queries
+        let statement = try connection!.run(query)
+        print("UPDATE query executed successfully.")
+    }
+
+    func executeDelete(query: String) throws {
+        // Logic for executing DELETE queries
+        let statement = try connection!.run(query)
+        print("DELETE query executed successfully.")
+    }
+
 
     func containsDangerousCharacters(_ query: String) -> Bool {
         // Define a set of characters that are not allowed in the query

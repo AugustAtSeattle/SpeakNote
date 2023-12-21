@@ -116,11 +116,7 @@ override func viewDidLayoutSubviews() {
         viewModel.transcribedText.asObservable()
             .bind(to: liveCaptionView.rx.text)
             .disposed(by: disposeBag)
-        
-//        viewModel.recordsText.asObservable()
-//            .bind(to: notesTextView.rx.text)
-//            .disposed(by: disposeBag)
-    
+            
         viewModel.isListeningRelay
             .asObservable()
             .subscribe(onNext: { [weak self] isListening in
