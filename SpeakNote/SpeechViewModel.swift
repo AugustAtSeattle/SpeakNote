@@ -121,7 +121,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             let run = try await assistant.createRun()
             let runStatus = try await checkRunStatus(run: run)
             let latestMessage = try await assistant.readLatestMessageFromThread()
-            await processLatestMessage(latestMessage: latestMessage)
+            try await processLatestMessage(latestMessage: latestMessage)
         } catch {
             isLoadingFromServerRelay.accept(false)
             print(error)
@@ -160,7 +160,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         return runStatus!
     }
         
-    func processLatestMessage(latestMessage: Message?) async {
+    func processLatestMessage(latestMessage: Message?) async throws {
         guard let latestMessage = latestMessage else {
             print("No SQL query found in the message")
             return
@@ -169,7 +169,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         if let response = assistant.extractAssistantResponse(from: latestMessage.content.first?.text?.value) {
             let query = response.query
             let description = response.description
-            databaseManager.executeQuery(query)
+            try databaseManager.executeQuery(query)
             let notes = databaseManager.fetchNotes()
             self.recordsText.accept(description)
             appleSpeechService.speak(text: description)

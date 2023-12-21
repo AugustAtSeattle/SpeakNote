@@ -10,6 +10,8 @@ import SQLite
 
 enum QueryError: Error {
     case invalidQuery
+    case connectionError
+    case executionError
 }
 
 class DatabaseManager {
@@ -56,25 +58,44 @@ class DatabaseManager {
 }
 
 extension DatabaseManager {
-    func executeQuery(_ query: String?) {
-        guard let query = query else {
-            print("error invalid query")
-            return
+
+    func executeQuery(_ query: String?) throws {
+        // Check if the query is not nil and not empty
+        guard let query = query, !query.isEmpty else {
+            print("Query is nil or empty.",query)
+            throw QueryError.invalidQuery
         }
-        
+
+        // Check if the connection is available
         guard let connection = connection else {
-            print("empty connection")
-            return
+            throw QueryError.connectionError
         }
-        
+
+        // Sanity check: Query special characters
+        if containsDangerousCharacters(query) {
+            throw QueryError.invalidQuery
+        }
+
+        let maxQueryLength = 200
+        if query.count > maxQueryLength {
+            throw QueryError.invalidQuery
+        }
+
         do {
             try connection.run(query)
-            
             print("Query executed successfully.")
         } catch {
-            print("An error occurred: \(error)")
+            throw QueryError.executionError
         }
     }
+
+    func containsDangerousCharacters(_ query: String) -> Bool {
+        // Define a set of characters that are not allowed in the query
+        print(query)
+        let forbiddenChars = CharacterSet(charactersIn: ";--\\")
+        return query.rangeOfCharacter(from: forbiddenChars) != nil
+    }
+
     
     func createNote(subject: String, details: String?, dueDate: Date?, location: String?, category: String, status: NoteStatus) -> Bool {
         do {

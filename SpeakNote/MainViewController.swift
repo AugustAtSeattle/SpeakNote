@@ -252,7 +252,7 @@ extension MainViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
     }
     
     func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
-        return CGSize(width: 30, height: 30) // You can adjust this value to suit your needs.
+        return CGSize(width: 50, height: 50)
     }
 }
 
