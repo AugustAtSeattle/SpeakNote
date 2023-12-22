@@ -126,6 +126,7 @@ class MainViewController: MessagesViewController {
             .subscribe(onNext: { [weak self] _ in
                 DispatchQueue.main.async {
                     self?.messagesCollectionView.reloadData()
+                    self?.messagesCollectionView.scrollToLastItem()
                 }
             })
             .disposed(by: disposeBag)
