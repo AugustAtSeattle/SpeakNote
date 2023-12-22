@@ -13,19 +13,18 @@ import MessageKit
 
 class MainViewController: MessagesViewController {
     let disposeBag = DisposeBag()
-
+    
     var liveCaptionView = UITextView()
     let audioWaveLayer = CAShapeLayer()
     let buttonSize: CGFloat = 120
     let micButton = UIButton()
-    var micButtonBottomConstraint: NSLayoutConstraint!
     let viewModel = SpeechViewModel()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = AppColors.secondaryGreen
-
+        
         setupMessagesCollectionView()
         setupLiveCaptionView()
         setupMicButton()
@@ -39,7 +38,7 @@ class MainViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.backgroundColor = AppColors.primaryGreen
-
+        
         messageInputBar.isHidden = true
         messagesCollectionView.layer.borderColor = AppColors.borderColor
         messagesCollectionView.layer.borderWidth = AppLayout.borderWidth
@@ -49,11 +48,11 @@ class MainViewController: MessagesViewController {
         messagesCollectionView.layer.cornerRadius = 30
         messagesCollectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
     }
-            
+    
     @objc func microphoneButtonTapped() {
         print("Microphone button tapped!")
     }
-
+    
     func setupLiveCaptionView() {
         liveCaptionView.isEditable = false
         liveCaptionView.isSelectable = false
@@ -69,7 +68,7 @@ class MainViewController: MessagesViewController {
         liveCaptionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(liveCaptionView)
     }
-
+    
     func setupMicButton() {
         micButton.setImage(UIImage(named: "mic_icon"), for: .normal)
         micButton.translatesAutoresizingMaskIntoConstraints = false
@@ -79,18 +78,14 @@ class MainViewController: MessagesViewController {
         micButton.clipsToBounds = true
         view.addSubview(micButton)
     }
-
+    
+    
     func setupConstraints() {
-        micButtonBottomConstraint = micButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
+        // Deactivate all existing constraints on the view
+        NSLayoutConstraint.deactivate(view.constraints)
+                
+        // Activate custom constraints
         NSLayoutConstraint.activate([
-            messagesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            messagesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppLayout.leadingConstant),
-            messagesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: AppLayout.trailingConstant),
-            messagesCollectionView.bottomAnchor.constraint(equalTo: liveCaptionView.topAnchor, constant: -40),
-            
             liveCaptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppLayout.leadingConstant),
             liveCaptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: AppLayout.trailingConstant),
             liveCaptionView.bottomAnchor.constraint(equalTo: micButton.topAnchor, constant: -40),
@@ -99,15 +94,18 @@ class MainViewController: MessagesViewController {
             micButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             micButton.heightAnchor.constraint(equalToConstant: buttonSize),
             micButton.widthAnchor.constraint(equalToConstant: buttonSize),
-            micButtonBottomConstraint
+            micButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
         ])
     }
     
-override func viewDidLayoutSubviews() {
-    // this is a hack to fix the messageCollectionView's frame being set to the full screen
-    messagesCollectionView.frame = CGRect(x: messagesCollectionView.frame.origin.x, y: messagesCollectionView.frame.origin.y + 100, width: messagesCollectionView.frame.size.width, height: messagesCollectionView.frame.size.height - 100)
-}
-
+    override func viewDidLayoutSubviews() {
+        let x = AppLayout.leadingConstant
+        let y = view.safeAreaLayoutGuide.layoutFrame.minY + 60
+        let width = UIScreen.main.bounds.width - 60
+        let height = UIScreen.main.bounds.height - 380
+        messagesCollectionView.frame = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(width), height: CGFloat(height))
+    }
+    
     func setupBindings() {
         micButton.rx.tap
             .bind(onNext: viewModel.toggleListening)
@@ -116,7 +114,7 @@ override func viewDidLayoutSubviews() {
         viewModel.transcribedText.asObservable()
             .bind(to: liveCaptionView.rx.text)
             .disposed(by: disposeBag)
-            
+        
         viewModel.isListeningRelay
             .asObservable()
             .subscribe(onNext: { [weak self] isListening in
@@ -145,10 +143,9 @@ override func viewDidLayoutSubviews() {
             })
             .disposed(by: disposeBag)
     }
-
+    
     func animateMicButton(isListening: Bool) {
         if isListening {
-//            micButtonBottomConstraint.constant = -70 // 60 points up + 10 original margin
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                 self.view.layoutIfNeeded()
@@ -156,7 +153,6 @@ override func viewDidLayoutSubviews() {
                 self?.startWaveAnimation()
             }
         } else {
-//            micButtonBottomConstraint.constant = -10
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = .identity
                 self.view.layoutIfNeeded()
@@ -167,7 +163,7 @@ override func viewDidLayoutSubviews() {
     }
     
     var waveAnimationTimer: Timer?
-        
+    
     func configureAudioWaveLayer() {
         audioWaveLayer.frame = CGRect(x: 0, y: buttonSize / 2 - 20, width: buttonSize, height: 40)
         audioWaveLayer.isHidden = true // Initially hidden
@@ -180,16 +176,16 @@ override func viewDidLayoutSubviews() {
     }
     
     func startWaveAnimation() {
-//        audioWaveLayer.isHidden = false
-//        micButton.setImage(nil, for: .normal)
-//        waveAnimationTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateWaveLayer), userInfo: nil, repeats: true)
+        //        audioWaveLayer.isHidden = false
+        //        micButton.setImage(nil, for: .normal)
+        //        waveAnimationTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateWaveLayer), userInfo: nil, repeats: true)
     }
     
     func stopWaveAnimation() {
-//        audioWaveLayer.isHidden = true
-//        micButton.setImage(UIImage(named: "mic_icon"), for: .normal)
-//        waveAnimationTimer?.invalidate()
-//        waveAnimationTimer = nil
+        //        audioWaveLayer.isHidden = true
+        //        micButton.setImage(UIImage(named: "mic_icon"), for: .normal)
+        //        waveAnimationTimer?.invalidate()
+        //        waveAnimationTimer = nil
     }
     
     @objc func updateWaveLayer() {
@@ -207,7 +203,7 @@ override func viewDidLayoutSubviews() {
         
         audioWaveLayer.path = path.cgPath
     }
-
+    
 }
 
 
