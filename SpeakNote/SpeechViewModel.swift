@@ -122,9 +122,24 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             let latestMessage = try await assistant.readLatestMessageFromThread()
             try await processLatestMessage(latestMessage: latestMessage)
         } catch {
-            isLoadingFromServerRelay.accept(false)
+            if let assistantError = error as? AssistantClientError {
+                handleAssistantError(assistantError)
+            } else if let queryError = error as? QueryError {
+                handleQueryError(queryError)
+            } else {
+                handleGenericError(error)
+            }
             print(error)
         }
+    }
+    
+    func presentResult(_ description: String)  {
+        appleSpeechService.speak(text: description)
+        let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(description))
+        var currentMessages = messages.value
+        currentMessages.append(message)
+        messages.accept(currentMessages)
+        isLoadingFromServerRelay.accept(false)
     }
     
     func getMessageContent() async throws -> String {
@@ -169,16 +184,9 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             let query = response.query
             let queryResult = try databaseManager.executeQuery(query)
             let description = queryResult.QueryType != .select ? response.description : (queryResult.Result ?? "No results found")
-            appleSpeechService.speak(text: description)
-            let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(description))
-            var currentMessages = messages.value
-            currentMessages.append(message)
-            messages.accept(currentMessages)
-            //                let notes = databaseManager.fetchNotes()
-            //                print(notes)
-            isLoadingFromServerRelay.accept(false)
+            presentResult(description)
         } else {
-            print("No SQL query found in the message")
+            throw QueryError.dataNotFound
         }
     }
     
@@ -198,6 +206,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             if speechGranted {
                 self.requestMicrophonePermission(completion: completion)
             } else {
+                self.presentResult("Speech recognition permission is required. Please enable it in settings.")
                 completion(false)
             }
         }
@@ -236,4 +245,34 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             }
         }
     }
+}
+
+// MARK: -- Error handling enhancement: More detailed error handling and logging
+extension SpeechViewModel {
+    
+    // Error handling enhancement: More detailed error handling and logging
+    private func handleSpeechError(_ error: Error) {
+        let detailedErrorDescription = "Speech Error: \(error.localizedDescription)"
+        print(detailedErrorDescription) // Logging for debugging
+        errorRelay.accept(error)
+        // Update UI to inform user about the error
+        presentResult("Error encountered: \(detailedErrorDescription)")
+    }
+    
+    private func handleQueryError(_ error: QueryError) {
+        // Specific error handling for QueryError
+        presentResult("Query Error: \(error.localizedDescription)")
+    }
+    
+    // Handle different types of errors with specific messages
+    private func handleAssistantError(_ error: AssistantClientError) {
+        // Specific error handling for AssistantClientError
+        presentResult("Assistant Error: \(error.localizedDescription)")
+    }
+
+    private func handleGenericError(_ error: Error) {
+        // Generic error handling
+        presentResult("An unexpected error occurred: \(error.localizedDescription)")
+    }
+    
 }
