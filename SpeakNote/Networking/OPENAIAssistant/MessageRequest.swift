@@ -124,6 +124,8 @@ extension AssistantClient {
                 throw AssistantClientError.noMessage
             }
             return latestMessage
+        } catch let error as AssistantClientError where error == .noMessage {
+            throw error
         } catch{
             throw AssistantClientError.decodingError
         }
