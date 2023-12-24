@@ -13,6 +13,7 @@ enum QueryError: Error {
     case connectionError
     case executionError
     case otherError
+    case dataNotFound
 }
 
 enum QueryType {
