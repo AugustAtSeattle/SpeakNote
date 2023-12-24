@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AssistantClientError: Error {
+enum AssistantClientError: Error, Equatable {
     case invalidURL
     case invalidAPIKey
     case invalidAssistantId
@@ -31,20 +31,33 @@ struct RetryPolicy {
     }
 }
 
+enum RetryError: Error {
+    case retryLimitReached(lastError: Error)
+    case operationCancelled
+}
+
 func retry<T>(policy: RetryPolicy, task: @escaping () async throws -> T) async throws -> T {
     var attempts = 0
-    repeat {
+
+    while attempts < policy.maxAttempts {
         do {
             return try await task()
         } catch {
             attempts += 1
+
             if attempts >= policy.maxAttempts {
-                throw error
+                throw RetryError.retryLimitReached(lastError: error)
             }
+
+            if Task.isCancelled {
+                throw RetryError.operationCancelled
+            }
+
             try await Task.sleep(nanoseconds: policy.delayInSeconds * 1_000_000_000)
         }
-    } while attempts < policy.maxAttempts
-    throw AssistantClientError.retryLimitReached
+    }
+    
+    throw RetryError.retryLimitReached(lastError: AssistantClientError.retryLimitReached)
 }
 
 class AssistantClient {
