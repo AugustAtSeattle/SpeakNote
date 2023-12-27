@@ -29,16 +29,16 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     private let assistant = AssistantClient()
     private let databaseManager = DatabaseManager.shared
     private let appleSpeechService = AppleSpeechService()
-
+    
     // Inputs
     // let toggleListening: AnyObserver<Void>
-
+    
     // Outputs
     let transcribedText = BehaviorRelay<String>(value: "Press the button and start speaking")
     let isListeningRelay = BehaviorRelay<Bool>(value: false)
     let isLoadingFromServerRelay = BehaviorRelay<Bool>(value: false)
     let messages = BehaviorRelay<[MessageType]>(value: [])
-
+    
     let currentSender: SenderType = SenderViewModel(senderId: "user", displayName: "User")
     let assistantSender: SenderType = SenderViewModel(senderId: "assistant", displayName: "Assistant")
     
@@ -61,11 +61,11 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     override init() {
         super.init()
         setupSpeechManager()
-//        loadMessages()
+        //        loadMessages()
     }
-
+    
     private func setupSpeechManager() {
-
+        
         // Set up the callback for speech recognition results
         speechManager.onResult = { [weak self] result in
             self?.transcribedText.accept(result)
@@ -83,29 +83,39 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     }
     
     func toggleListening() {
-        let speechRecognizerAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
-        let microphoneAuthorized = AVAudioSession.sharedInstance().recordPermission == .granted
-
-        // If either permission is not granted, request them and then return immediately
-        if !speechRecognizerAuthorized || !microphoneAuthorized {
-            requestSpeechAndMicrophonePermissions { _ in
-                // Do nothing
-            }
-        } else {
-            // If permissions are already granted, proceed with toggling listening
-            if isListeningRelay.value {
-                stopListening()
+        checkPermissions { [weak self] permissionsGranted in
+            if permissionsGranted {
+                self?.handleListeningState()
             } else {
-                startListening()
+                self?.presentResult("Permissions are not granted.")
             }
         }
     }
-
+        
+    private func checkPermissions(completion: @escaping (Bool) -> Void) {
+        let speechRecognizerAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
+        let microphoneAuthorized = AVAudioSession.sharedInstance().recordPermission == .granted
+        
+        if !speechRecognizerAuthorized || !microphoneAuthorized {
+            requestSpeechAndMicrophonePermissions(completion: completion)
+        } else {
+            completion(true)
+        }
+    }
+    
+    private func handleListeningState() {
+        if isListeningRelay.value {
+            stopListening()
+        } else {
+            startListening()
+        }
+    }
+    
     func startListening() {
         speechManager.startRecognition()
     }
-
-
+    
+    
     func stopListening() {
         Task {
             await performQueryHelper()
@@ -153,10 +163,10 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         messages.accept(currentMessages)
         
         isLoadingFromServerRelay.accept(true)
-
+        
         return transcribedText.value
     }
-        
+    
     func checkRunStatus(run: Run) async throws -> RunStatus {
         var runStatus: RunStatus?
         repeat {
@@ -173,7 +183,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         } while runStatus != .completed
         return runStatus!
     }
-        
+    
     func processLatestMessage(latestMessage: Message?) async throws {
         guard let latestMessage = latestMessage else {
             print("No SQL query found in the message")
@@ -196,7 +206,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         let message2: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will buy two eggs from Costco"))
         let message3: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("have a meetting tomorrow 10"))
         let message4: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text("noted, you will have a meeting tomorrow at 10 am"))
-
+        
         messages.accept([message1, message2, message3, message4]) // Changed to use .accept() method of BehaviorRelay
     }
     
@@ -232,12 +242,12 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
                 case .authorized:
                     print("Speech recognition authorization granted")
                     completion(true)
-
+                    
                 case .denied, .restricted, .notDetermined:
                     print("Speech recognition authorization denied, restricted, or not determined")
                     // Optionally, show an alert or update the UI to inform the user
                     completion(false)
-
+                    
                 @unknown default:
                     print("Unknown authorization status")
                     completion(false)
@@ -269,7 +279,7 @@ extension SpeechViewModel {
         // Specific error handling for AssistantClientError
         presentResult("Assistant Error: \(error.localizedDescription)")
     }
-
+    
     private func handleGenericError(_ error: Error) {
         // Generic error handling
         presentResult("An unexpected error occurred: \(error.localizedDescription)")
