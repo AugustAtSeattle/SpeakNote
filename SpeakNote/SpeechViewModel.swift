@@ -29,6 +29,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     private let assistant = AssistantClient()
     private let databaseManager = DatabaseManager.shared
     private let appleSpeechService = AppleSpeechService()
+    private let permissionManager = PermissionManager()
     
     // Inputs
     // let toggleListening: AnyObserver<Void>
@@ -83,7 +84,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     }
     
     func toggleListening() {
-        checkPermissions { [weak self] permissionsGranted in
+        permissionManager.checkAndRequestPermissions { [weak self] permissionsGranted in
             if permissionsGranted {
                 self?.handleListeningState()
             } else {
@@ -92,17 +93,6 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         }
     }
         
-    private func checkPermissions(completion: @escaping (Bool) -> Void) {
-        let speechRecognizerAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
-        let microphoneAuthorized = AVAudioSession.sharedInstance().recordPermission == .granted
-        
-        if !speechRecognizerAuthorized || !microphoneAuthorized {
-            requestSpeechAndMicrophonePermissions(completion: completion)
-        } else {
-            completion(true)
-        }
-    }
-    
     private func handleListeningState() {
         if isListeningRelay.value {
             stopListening()
@@ -210,51 +200,6 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         messages.accept([message1, message2, message3, message4]) // Changed to use .accept() method of BehaviorRelay
     }
     
-    
-    func requestSpeechAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
-        requestSpeechRecognitionPermission { speechGranted in
-            if speechGranted {
-                self.requestMicrophonePermission(completion: completion)
-            } else {
-                self.presentResult("Speech recognition permission is required. Please enable it in settings.")
-                completion(false)
-            }
-        }
-    }
-    
-    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
-        AVAudioSession.sharedInstance().requestRecordPermission { granted in
-            DispatchQueue.main.async {
-                if granted {
-                    print("Microphone permission granted")
-                } else {
-                    print("Microphone permission denied")
-                }
-                completion(granted)
-            }
-        }
-    }
-    
-    func requestSpeechRecognitionPermission(completion: @escaping (Bool) -> Void) {
-        SFSpeechRecognizer.requestAuthorization { authStatus in
-            DispatchQueue.main.async {
-                switch authStatus {
-                case .authorized:
-                    print("Speech recognition authorization granted")
-                    completion(true)
-                    
-                case .denied, .restricted, .notDetermined:
-                    print("Speech recognition authorization denied, restricted, or not determined")
-                    // Optionally, show an alert or update the UI to inform the user
-                    completion(false)
-                    
-                @unknown default:
-                    print("Unknown authorization status")
-                    completion(false)
-                }
-            }
-        }
-    }
 }
 
 // MARK: -- Error handling enhancement: More detailed error handling and logging

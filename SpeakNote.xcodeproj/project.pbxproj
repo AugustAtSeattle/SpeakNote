@@ -44,6 +44,8 @@
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
 		CC79A8002B2F8E9F006F1EB9 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC79A7FF2B2F8E9F006F1EB9 /* MessageKit */; };
 		CC79A8022B2FE878006F1EB9 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC79A8012B2FE878006F1EB9 /* AppTheme.swift */; };
+		CCFF6B652B3BA7BD00FFE344 /* QueryProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF6B642B3BA7BD00FFE344 /* QueryProcessingService.swift */; };
+		CCFF6B672B3BA7F000FFE344 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF6B662B3BA7F000FFE344 /* PermissionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +94,8 @@
 		CC59DB692B251A4E008AFC2F /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
 		CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechService.swift; sourceTree = "<group>"; };
 		CC79A8012B2FE878006F1EB9 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		CCFF6B642B3BA7BD00FFE344 /* QueryProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryProcessingService.swift; sourceTree = "<group>"; };
+		CCFF6B662B3BA7F000FFE344 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +196,8 @@
 			children = (
 				CC2F76962B19669100C27D1A /* SpeechServices */,
 				CC2F76952B19668000C27D1A /* DatabaseServices */,
+				CCFF6B642B3BA7BD00FFE344 /* QueryProcessingService.swift */,
+				CCFF6B662B3BA7F000FFE344 /* PermissionManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -404,6 +410,7 @@
 				CC79A8022B2FE878006F1EB9 /* AppTheme.swift in Sources */,
 				CC59DB642B25174C008AFC2F /* AssistantRequest.swift in Sources */,
 				CC2F76942B19665200C27D1A /* AppleSpeechRecognitionService.swift in Sources */,
+				CCFF6B652B3BA7BD00FFE344 /* QueryProcessingService.swift in Sources */,
 				CC17DC5B2B154B460084679B /* SpeechViewModel.swift in Sources */,
 				CC59DB6A2B251A4E008AFC2F /* MessageRequest.swift in Sources */,
 				CC59DB682B2517D4008AFC2F /* RunRequest.swift in Sources */,
@@ -417,6 +424,7 @@
 				CC59DB612B24F8BD008AFC2F /* OpenAIAssistantClient.swift in Sources */,
 				CC2F76922B19662600C27D1A /* WhisperRecognitionService.swift in Sources */,
 				CC59DB6C2B293A15008AFC2F /* AppleSpeechService.swift in Sources */,
+				CCFF6B672B3BA7F000FFE344 /* PermissionManager.swift in Sources */,
 				CC17DC2D2B1539AB0084679B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
