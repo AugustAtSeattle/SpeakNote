@@ -26,10 +26,10 @@ struct MessageViewModel: MessageType {
 class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     private let disposeBag = DisposeBag()
     private let speechManager = SpeechRecognitionManager()
-    private let assistant = AssistantClient()
-    private let databaseManager = DatabaseManager.shared
+    
     private let appleSpeechService = AppleSpeechService()
     private let permissionManager = PermissionManager()
+    private let queryProcessingService = QueryProcessingService()
     
     // Inputs
     // let toggleListening: AnyObserver<Void>
@@ -92,7 +92,7 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
             }
         }
     }
-        
+    
     private func handleListeningState() {
         if isListeningRelay.value {
             stopListening()
@@ -108,32 +108,46 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     
     func stopListening() {
         Task {
-            await performQueryHelper()
+            await performQuery()
         }
         speechManager.stopRecognition()
     }
     
-    func performQueryHelper() async {
+    
+}
+
+// MARK: - performQuery
+extension SpeechViewModel {
+    
+    func performQuery() async {
         do {
-            let messageContent = try await getMessageContent()
-            _ = try await assistant.createMessage(messageContent: messageContent)
-            let run = try await assistant.createRun()
-            let runStatus = try await checkRunStatus(run: run)
-            let latestMessage = try await assistant.readLatestMessageFromThread()
-            try await processLatestMessage(latestMessage: latestMessage)
+            let userQuery = try await getUserQuery()
+            updateUIWithNewMessage(userQuery)
+            let result = try await queryProcessingService.processQuery(userQuery)
+            presentResult(result)
         } catch {
-            if let assistantError = error as? AssistantClientError {
-                handleAssistantError(assistantError)
-            } else if let queryError = error as? QueryError {
-                handleQueryError(queryError)
-            } else {
-                handleGenericError(error)
-            }
-            print(error)
+            handleQueryError(error)
         }
     }
     
-    func presentResult(_ description: String)  {
+    func getUserQuery() async throws -> String {
+        guard !transcribedText.value.isEmpty else {
+            throw speechViewModelError.noTranscribedText
+        }
+        return transcribedText.value
+    }
+
+    func updateUIWithNewMessage(_ messageContent: String) {
+        let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(messageContent))
+        var currentMessages = messages.value
+        currentMessages.append(message)
+        messages.accept(currentMessages)
+        
+        isLoadingFromServerRelay.accept(true)
+    }
+
+    
+    private func presentResult(_ description: String)  {
         appleSpeechService.speak(text: description)
         let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "assistant", displayName: "Assistant"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(description))
         var currentMessages = messages.value
@@ -142,52 +156,15 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         isLoadingFromServerRelay.accept(false)
     }
     
-    func getMessageContent() async throws -> String {
-        guard !transcribedText.value.isEmpty else {
-            throw speechViewModelError.noTranscribedText
-        }
-        
-        let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(transcribedText.value))
-        var currentMessages = messages.value
-        currentMessages.append(message)
-        messages.accept(currentMessages)
-        
-        isLoadingFromServerRelay.accept(true)
-        
-        return transcribedText.value
-    }
-    
-    func checkRunStatus(run: Run) async throws -> RunStatus {
-        var runStatus: RunStatus?
-        repeat {
-            runStatus = try await assistant.getRunStatus(runId: run.id)
-            guard runStatus == .queued ||
-                    runStatus == .inProgress ||
-                    runStatus == .completed else {
-                throw AssistantClientError.openAIServiceError(message: runStatus?.rawValue ?? "Unknown error")
-            }
-            
-            if let status = runStatus, status != .completed {
-                try await Task.sleep(nanoseconds: 1_000_000_000) // sleep for 1 second before next status check
-            }
-        } while runStatus != .completed
-        return runStatus!
-    }
-    
-    func processLatestMessage(latestMessage: Message?) async throws {
-        guard let latestMessage = latestMessage else {
-            print("No SQL query found in the message")
-            return
-        }
-        
-        if let response = assistant.extractAssistantResponse(from: latestMessage.content.first?.text?.value) {
-            let query = response.query
-            let queryResult = try databaseManager.executeQuery(query)
-            let description = queryResult.QueryType != .select ? response.description : (queryResult.Result ?? "No results found")
-            presentResult(description)
+    private func handleQueryError(_ error: Error) {
+        if let assistantError = error as? AssistantClientError {
+            handleAssistantError(assistantError)
+        } else if let queryError = error as? QueryError {
+            handleQueryError(queryError)
         } else {
-            throw QueryError.dataNotFound
+            handleGenericError(error)
         }
+        print(error)
     }
     
     // Load some sample messages
@@ -199,7 +176,6 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         
         messages.accept([message1, message2, message3, message4]) // Changed to use .accept() method of BehaviorRelay
     }
-    
 }
 
 // MARK: -- Error handling enhancement: More detailed error handling and logging
