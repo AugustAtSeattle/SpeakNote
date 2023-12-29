@@ -160,7 +160,7 @@ extension SpeechViewModel {
         if let assistantError = error as? AssistantClientError {
             handleAssistantError(assistantError)
         } else if let queryError = error as? QueryError {
-            handleQueryError(queryError)
+            handleDatabaseError(queryError)
         } else {
             handleGenericError(error)
         }
@@ -189,7 +189,7 @@ extension SpeechViewModel {
         presentResult("Error encountered: \(detailedErrorDescription)")
     }
     
-    private func handleQueryError(_ error: QueryError) {
+    private func handleDatabaseError(_ error: QueryError) {
         // Specific error handling for QueryError
         presentResult("Query Error: \(error.localizedDescription)")
     }
