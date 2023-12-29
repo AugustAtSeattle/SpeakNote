@@ -48,11 +48,7 @@ class MainViewController: MessagesViewController {
         messagesCollectionView.layer.cornerRadius = 30
         messagesCollectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
     }
-    
-    @objc func microphoneButtonTapped() {
-        print("Microphone button tapped!")
-    }
-    
+        
     func setupLiveCaptionView() {
         liveCaptionView.isEditable = false
         liveCaptionView.isSelectable = false

@@ -47,13 +47,11 @@ class QueryProcessingService {
             throw QueryError.dataNotFound
         }
         
-        if let response = assistant.extractAssistantResponse(from: latestMessage.content.first?.text?.value) {
-            let query = response.query
-            let queryResult = try databaseManager.executeQuery(query)
-            let description = queryResult.QueryType != .select ? response.description : (queryResult.Result ?? "No results found")
-            return description
-        } else {
-            throw QueryError.dataNotFound
-        }
+        let response = try assistant.extractAssistantResponse(from: latestMessage.content.first?.text?.value)
+        let query = response.query
+        let queryResult = try databaseManager.executeQuery(query)
+        let description = queryResult.QueryType != .select ? response.description : (queryResult.Result ?? "No results found")
+        return description
+
     }
 }

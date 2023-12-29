@@ -186,7 +186,6 @@ extension SpeechViewModel {
         let detailedErrorDescription = "Speech Error: \(error.localizedDescription)"
         print(detailedErrorDescription) // Logging for debugging
         errorRelay.accept(error)
-        // Update UI to inform user about the error
         presentResult("Error encountered: \(detailedErrorDescription)")
     }
     

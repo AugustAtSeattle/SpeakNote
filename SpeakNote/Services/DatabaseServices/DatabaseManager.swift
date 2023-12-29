@@ -67,6 +67,7 @@ class DatabaseManager {
 
 }
 
+// MARK: - Execute Queries FUNCTIONS
 extension DatabaseManager {
 
     func executeQuery(_ query: String?) throws -> (QueryType: QueryType, Result: String?) {
@@ -105,24 +106,6 @@ extension DatabaseManager {
             return (queryType, result)
         } catch {
             throw QueryError.executionError
-        }
-    }
-
-    
-    
-    func determineQueryType(query: String) -> QueryType {
-        let lowercasedQuery = query.lowercased()
-
-        if lowercasedQuery.hasPrefix("select") {
-            return .select
-        } else if lowercasedQuery.hasPrefix("insert") {
-            return .insert
-        } else if lowercasedQuery.hasPrefix("update") {
-            return .update
-        } else if lowercasedQuery.hasPrefix("delete") {
-            return .delete
-        } else {
-            return .other
         }
     }
     
@@ -165,16 +148,37 @@ extension DatabaseManager {
         let statement = try connection!.run(query)
         print("DELETE query executed successfully.")
     }
+}
 
+// MARK: - Helper Functions
+extension DatabaseManager {
+    func determineQueryType(query: String) -> QueryType {
+        let lowercasedQuery = query.lowercased()
 
+        if lowercasedQuery.hasPrefix("select") {
+            return .select
+        } else if lowercasedQuery.hasPrefix("insert") {
+            return .insert
+        } else if lowercasedQuery.hasPrefix("update") {
+            return .update
+        } else if lowercasedQuery.hasPrefix("delete") {
+            return .delete
+        } else {
+            return .other
+        }
+    }
+    
     func containsDangerousCharacters(_ query: String) -> Bool {
         // Define a set of characters that are not allowed in the query
         print(query)
         let forbiddenChars = CharacterSet(charactersIn: ";--\\")
         return query.rangeOfCharacter(from: forbiddenChars) != nil
     }
+}
 
-    
+
+// MARK: - Sample Data
+extension DatabaseManager {
     func createNote(subject: String, details: String?, dueDate: Date?, location: String?, category: String, status: NoteStatus) -> Bool {
         do {
             let insert = notesTable.insert(
@@ -216,24 +220,6 @@ extension DatabaseManager {
         return notes
     }
     
-    func markNoteAsFinished(noteId: Int64) -> Bool {
-        let note = notesTable.filter(id == noteId)
-        do {
-            let update = note.update(status <- NoteStatus.finished.rawValue)
-            if try connection?.run(update) ?? 0 > 0 {
-                return true
-            } else {
-                print("No note was updated")
-                return false
-            }
-        } catch {
-            print("Update failed: \(error)")
-            return false
-        }
-    }
-}
-
-extension DatabaseManager {
     func insertSampleNotesIfEmpty() {
         do {
             // Check if the notes table is empty
