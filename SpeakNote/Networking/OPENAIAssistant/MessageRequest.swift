@@ -27,7 +27,7 @@ struct Message: Codable {
     let assistantId: String?
     let runId: String?
     let metadata: [String: String]?
-
+    
     enum CodingKeys: String, CodingKey {
         case id, object, role, content, metadata
         case createdAt = "created_at"
@@ -43,7 +43,7 @@ struct MessageList: Codable {
     let firstId: String
     let lastId: String
     let hasMore: Bool
-
+    
     enum CodingKeys: String, CodingKey {
         case object, data
         case firstId = "first_id"
@@ -71,21 +71,21 @@ extension AssistantClient {
         guard let url = URL(string: "https://api.openai.com/v1/threads/\(threadId)/messages") else {
             throw AssistantClientError.invalidURL
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.addValue("assistants=v1", forHTTPHeaderField: "OpenAI-Beta")
-
+        
         let body: [String: Any] = [
             "role": "user",
             "content": messageContent
         ]
-
+        
         let jsonData = try JSONSerialization.data(withJSONObject: body)
         request.httpBody = jsonData
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
@@ -143,28 +143,29 @@ extension AssistantClient {
         guard let url = URL(string: "https://api.openai.com/v1/threads/\(threadId)/messages?limit=1") else {
             throw AssistantClientError.invalidURL
         }
-
+        
         let retryPolicy = RetryPolicy(maxAttempts: 3, delayInSeconds: 1)
         return try await retry(policy: retryPolicy) {
             try await self.attemptToReadLatestMessage(apiKey: apiKey, url: url)
         }
     }
     
-    func extractAssistantResponse(from jsonString: String?) -> AssistantResponse? {
+    func extractAssistantResponse(from jsonString: String?) throws -> AssistantResponse {
         guard let jsonString = jsonString,
               let data = jsonString.data(using: .utf8) else {
-            return nil
+            throw AssistantClientError.decodingError
         }
-
         do {
             var assistantResponse = try JSONDecoder().decode(AssistantResponse.self, from: data)
             assistantResponse.query = assistantResponse.query.replacingOccurrences(of: "\\n", with: " ", options: .literal, range: nil)
             return assistantResponse
+        } catch let error as DecodingError {
+            throw AssistantClientError.decodingError
         } catch {
-            print("Error: \(error.localizedDescription)")
+            print(error)
+            throw error
         }
-        
-        return nil
+
     }
     
 }
