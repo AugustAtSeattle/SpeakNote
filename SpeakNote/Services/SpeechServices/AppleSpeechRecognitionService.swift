@@ -8,6 +8,16 @@
 import Foundation
 import Speech
 
+// TODO: Handle onError callback
+//enum SpeechRecognitionError: Error {
+//    case audioSessionConfigurationFailed
+//    case recognitionRequestFailed
+//    case audioEngineError(Error)
+//    case silenceDetectionFailed
+//    case genericError(Error)
+//    case recognitionCancelled
+//}
+
 class AppleSpeechRecognitionService: SpeechRecognitionService {
     var onResult: ((String) -> Void)?
     var onError: ((Error) -> Void)?
@@ -42,6 +52,7 @@ class AppleSpeechRecognitionService: SpeechRecognitionService {
             silenceTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(checkForSilence), userInfo: nil, repeats: true)
         } catch {
             print("Error starting audio engine: \(error)")
+            self.onError?(error)
         }
     }
 
@@ -71,6 +82,7 @@ class AppleSpeechRecognitionService: SpeechRecognitionService {
         } catch {
             // Handle the error more specifically if desired
             print("Audio Session error: \(error)")
+            self.onError?(error)
         }
         
         // Notify observers that listening has stopped.
@@ -95,6 +107,7 @@ class AppleSpeechRecognitionService: SpeechRecognitionService {
             return true
         } catch {
             print("Audio session configuration error: \(error)")
+            self.onError?(error)
             return false
         }
     }
@@ -108,10 +121,12 @@ class AppleSpeechRecognitionService: SpeechRecognitionService {
         
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             if let result = result {
-//                print("Recognition task result: \(result.bestTranscription.formattedString)")
                 self?.lastTranscriptTimestamp = Date()
-                self?.onResult?(result.bestTranscription.formattedString) // Trigger the onResult callback if set
+                self?.onResult?(result.bestTranscription.formattedString)
             } else if let error = error {
+                self?.onError?(error)
+                //TODO: "No speech detected" error is not handled
+                //Recognition task error: Error Domain=kAFAssistantErrorDomain Code=1110 "No speech detected" UserInfo={NSLocalizedDescription=No speech detected}
                 print("Recognition task error: \(error)")
             }
         }
