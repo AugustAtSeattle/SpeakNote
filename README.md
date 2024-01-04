@@ -1,4 +1,3 @@
-__# SpeakNote
 [![SpeakNote iOS Build](https://github.com/AugustAtSeattle/SpeakNote/actions/workflows/ios.yml/badge.svg?branch=main)](https://github.com/AugustAtSeattle/SpeakNote/actions/workflows/ios.yml)
 ## Project Overview
 SpeakNote leverages the power of Whisper and GPT to transform note-taking into a hands-free, voice-activated experience on iOS platforms. Users can effortlessly dictate tasks, manage lists, and set reminders—all through intuitive voice commands.
