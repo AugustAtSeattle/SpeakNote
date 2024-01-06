@@ -5,6 +5,14 @@
 //  Created by Sailor on 11/27/23.
 //
 
+// buy icecream from costco
+// buy paper towel from costco
+// have a tax report done in Walmart
+// flu shot in CVS
+// buy a new ipad from costco
+// I am in costco, what to do?
+// I am in Walmart, what to do? 
+
 import UIKit
 import Speech
 import RxSwift
@@ -30,7 +38,6 @@ class MainViewController: MessagesViewController {
         setupMicButton()
         setupConstraints()
         setupBindings()
-        configureAudioWaveLayer()
     }
     
     func setupMessagesCollectionView() {
@@ -147,58 +154,14 @@ class MainViewController: MessagesViewController {
                 self.micButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                 self.view.layoutIfNeeded()
             }) { [weak self] _ in
-                self?.startWaveAnimation()
             }
         } else {
             UIView.animate(withDuration: 0.3, animations: {
                 self.micButton.transform = .identity
                 self.view.layoutIfNeeded()
             }) { [weak self] _ in
-                self?.stopWaveAnimation()
             }
         }
-    }
-    
-    var waveAnimationTimer: Timer?
-    
-    func configureAudioWaveLayer() {
-        audioWaveLayer.frame = CGRect(x: 0, y: buttonSize / 2 - 20, width: buttonSize, height: 40)
-        audioWaveLayer.isHidden = true // Initially hidden
-        // Configure the wave layer appearance
-        audioWaveLayer.strokeColor = UIColor.green.cgColor
-        audioWaveLayer.fillColor = UIColor.gray.cgColor
-        audioWaveLayer.lineWidth = 2
-        audioWaveLayer.lineCap = .round
-        micButton.layer.addSublayer(audioWaveLayer)
-    }
-    
-    func startWaveAnimation() {
-        //        audioWaveLayer.isHidden = false
-        //        micButton.setImage(nil, for: .normal)
-        //        waveAnimationTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateWaveLayer), userInfo: nil, repeats: true)
-    }
-    
-    func stopWaveAnimation() {
-        //        audioWaveLayer.isHidden = true
-        //        micButton.setImage(UIImage(named: "mic_icon"), for: .normal)
-        //        waveAnimationTimer?.invalidate()
-        //        waveAnimationTimer = nil
-    }
-    
-    @objc func updateWaveLayer() {
-        // Generate a random volume level between 0 and 100
-        let volumeLevel = CGFloat(arc4random_uniform(101))
-        // Calculate the normalized height for the wave
-        let normalizedHeight = volumeLevel / 100 * 40 // Max height of 40 points
-        // Update the audioWaveLayer path based on the volume level
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: 0, y: 20)) // Middle of the audioWaveLayer height
-        path.addLine(to: CGPoint(x: buttonSize / 4, y: 20 - normalizedHeight / 2))
-        path.addLine(to: CGPoint(x: buttonSize / 2, y: 20 + normalizedHeight / 2))
-        path.addLine(to: CGPoint(x: buttonSize * 3 / 4, y: 20 - normalizedHeight / 2))
-        path.addLine(to: CGPoint(x: buttonSize, y: 20)) // Back to middle
-        
-        audioWaveLayer.path = path.cgPath
     }
     
 }

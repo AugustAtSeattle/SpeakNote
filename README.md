@@ -26,18 +26,8 @@ The application utilizes Whisper for superior voice recognition, ensuring accura
 - [Database Schema](Database-Schema) - Detailed structure of the database used in SpeakNote.
 - [SQL Query Composer(GPT API Assitant](SQL-Query-Composer-(OPENAI-Assistants-API)) - A OPENAI Assistants API
 
-### Core Features for MVP
-- **Voice-Activated Note-Taking**: Users can speak to the app, and it transcribes their speech into text notes.
-- **Local Storage of Notes**: Notes are stored securely in the device's local storage.
-- **Basic Query Functionality**: Users can retrieve and view their notes based on simple queries.
-
-### Architectural Design for MVP
-- **Model-View-ViewModel (MVVM)**: Ideal for separating UI, business logic, and data modeling, simplifying testing and maintenance.
-- **Repository Pattern**: For abstracting data access logic, beneficial for future complex data operations or additional data sources.
-- **Observer Pattern**: To update the UI in real-time as new notes are created or existing ones are modified.
-
 ### Future Expansion Considerations
-- **Siri Integration and Dual Language Support**: Planned for future versions as enhancements. The architecture is designed to be flexible to integrate these features without a major overhaul.
+- **Siri Integration**: Planned for future versions as enhancements. The architecture is designed to be flexible to integrate these features without a major overhaul.
 - **Modular Design**: Components like voice recognition and language processing are kept modular for easy upgrades or replacements.
 - **Cloud Storage**: Future versions may support cloud storage for notes, enabling users to access their notes across devices.
 
@@ -49,4 +39,4 @@ We welcome contributions to the SpeakNote project. If you're interested in contr
 SpeakNote is released under the [MIT License](LICENSE).
 
 ## Contact
-For feedback, questions, or collaboration, please contact me. You can also [file an issue].
+For feedback, questions, or collaboration, please contact me. You can also [File an issue].
