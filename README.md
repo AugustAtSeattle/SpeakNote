@@ -26,6 +26,12 @@ The application utilizes Whisper for superior voice recognition, ensuring accura
 - [Database Schema](Database-Schema) - Detailed structure of the database used in SpeakNote.
 - [SQL Query Composer(GPT API Assitant)](SQL-Query-Composer-(OPENAI-Assistants-API)) - A OPENAI Assistants API
 - [Architecture Guide](./ArchitecturalDesign.md) - Detailed overview of SpeakNote's architectural design.
+  
+## How to Set Up the Project
+To get started contributing with SpeakNote, follow these steps:
+
+1. **Open the Xcode Project**: Locate and open the `SpeakNote.xcodeproj` file in Xcode.
+2. **Set the OpenAI API Key**: In the `Info.plist` file, find the key `OPEN_API_KEY` and set it to your OpenAI API key.
 
 ## How to Contribute
 We welcome contributions to the SpeakNote project. If you're interested in contributing, please read our contribution guidelines.
