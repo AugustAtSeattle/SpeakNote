@@ -25,7 +25,7 @@ The application utilizes Whisper for superior voice recognition, ensuring accura
 
 - [Database Schema](Database-Schema) - Detailed structure of the database used in SpeakNote.
 - [SQL Query Composer(GPT API Assitant)](SQL-Query-Composer-(OPENAI-Assistants-API)) - A OPENAI Assistants API
-- [Architecture Guide](./ARCHITECTURE.md) - Detailed overview of SpeakNote's architectural design.
+- [Architecture Guide](./ArchitecturalDesign.md) - Detailed overview of SpeakNote's architectural design.
 
 ## How to Contribute
 We welcome contributions to the SpeakNote project. If you're interested in contributing, please read our contribution guidelines.
@@ -34,4 +34,4 @@ We welcome contributions to the SpeakNote project. If you're interested in contr
 SpeakNote is released under the [MIT License](LICENSE).
 
 ## Contact
-For feedback, questions, or collaboration, please contact me. You can also File an issue.
+For feedback, questions, or collaboration, please contact me. You can also file an issue.
