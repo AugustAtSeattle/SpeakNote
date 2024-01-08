@@ -9,58 +9,38 @@ import Foundation
 import Speech
 
 class PermissionManager {
-    func checkAndRequestPermissions(completion: @escaping (Bool) -> Void) {
+    func checkAndRequestPermissions() async -> Bool {
         let speechRecognizerAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
         let microphoneAuthorized = AVAudioSession.sharedInstance().recordPermission == .granted
         
         if !speechRecognizerAuthorized || !microphoneAuthorized {
-            requestSpeechAndMicrophonePermissions(completion: completion)
+            return await requestMicrophonePermission()
         } else {
-            completion(true)
+            return true
         }
     }
     
-    func requestSpeechAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
-         requestSpeechRecognitionPermission { speechGranted in
-             if speechGranted {
-                 self.requestMicrophonePermission(completion: completion)
-             } else {
-                 completion(false)
-             }
-         }
-     }
-     
-     func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
-         AVAudioSession.sharedInstance().requestRecordPermission { granted in
-             DispatchQueue.main.async {
-                 if granted {
-                     print("Microphone permission granted")
-                 } else {
-                     print("Microphone permission denied")
-                 }
-                 completion(granted)
-             }
-         }
-     }
-     
-     func requestSpeechRecognitionPermission(completion: @escaping (Bool) -> Void) {
-         SFSpeechRecognizer.requestAuthorization { authStatus in
-             DispatchQueue.main.async {
-                 switch authStatus {
-                 case .authorized:
-                     print("Speech recognition authorization granted")
-                     completion(true)
-                     
-                 case .denied, .restricted, .notDetermined:
-                     print("Speech recognition authorization denied, restricted, or not determined")
-                     // Optionally, show an alert or update the UI to inform the user
-                     completion(false)
-                     
-                 @unknown default:
-                     print("Unknown authorization status")
-                     completion(false)
-                 }
-             }
-         }
-     }
+    func requestSpeechAndMicrophonePermissions() async -> Bool {
+        let isSpeechAuthorized = await requestSpeechRecognitionPermission()
+        guard isSpeechAuthorized else { return false }
+
+        let isMicrophoneAuthorized = await requestMicrophonePermission()
+        return isMicrophoneAuthorized
+    }
+    
+    func requestMicrophonePermission() async -> Bool {
+        return await withCheckedContinuation { continuation in
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                continuation.resume(returning: granted)
+            }
+        }
+    }
+         
+    func requestSpeechRecognitionPermission() async -> Bool {
+        return await withCheckedContinuation { continuation in
+            SFSpeechRecognizer.requestAuthorization { authStatus in
+                continuation.resume(returning: authStatus == .authorized)
+            }
+        }
+    }
 }

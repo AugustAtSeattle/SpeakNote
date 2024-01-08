@@ -84,11 +84,14 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     }
     
     func toggleListening() {
-        permissionManager.checkAndRequestPermissions { [weak self] permissionsGranted in
-            if permissionsGranted {
-                self?.handleListeningState()
-            } else {
-                self?.presentResult("Permissions are not granted.")
+        Task {
+            let result = await permissionManager.checkAndRequestPermissions()
+            DispatchQueue.main.async { [weak self] in
+                if result {
+                    self?.handleListeningState()
+                } else {
+                    self?.presentResult("Permissions are not granted.")
+                }
             }
         }
     }
