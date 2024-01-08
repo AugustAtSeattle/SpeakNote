@@ -28,24 +28,18 @@ class PermissionManager {
         return isMicrophoneAuthorized
     }
     
-    // Wrap the microphone permission request in an async function
     func requestMicrophonePermission() async -> Bool {
         return await withCheckedContinuation { continuation in
             AVAudioSession.sharedInstance().requestRecordPermission { granted in
-                DispatchQueue.main.async {
-                    continuation.resume(returning: granted)
-                }
+                continuation.resume(returning: granted)
             }
         }
     }
          
-    // Wrap the speech recognition permission request in an async function
     func requestSpeechRecognitionPermission() async -> Bool {
         return await withCheckedContinuation { continuation in
             SFSpeechRecognizer.requestAuthorization { authStatus in
-                DispatchQueue.main.async {
-                    continuation.resume(returning: authStatus == .authorized)
-                }
+                continuation.resume(returning: authStatus == .authorized)
             }
         }
     }
