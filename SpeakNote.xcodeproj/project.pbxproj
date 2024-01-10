@@ -42,6 +42,9 @@
 		CC59DB6C2B293A15008AFC2F /* AppleSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */; };
 		CC6A20832B16641A00040F42 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20822B16641A00040F42 /* RxCocoa */; };
 		CC6A20852B16641A00040F42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6A20842B16641A00040F42 /* RxSwift */; };
+		CC7050C12B4E70A3009F10D5 /* ArchitecturalDesign.md in Resources */ = {isa = PBXBuildFile; fileRef = CC7050BE2B4E70A3009F10D5 /* ArchitecturalDesign.md */; };
+		CC7050C22B4E70A3009F10D5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CC7050BF2B4E70A3009F10D5 /* README.md */; };
+		CC7050C32B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py in Resources */ = {isa = PBXBuildFile; fileRef = CC7050C02B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py */; };
 		CC79A8002B2F8E9F006F1EB9 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC79A7FF2B2F8E9F006F1EB9 /* MessageKit */; };
 		CC79A8022B2FE878006F1EB9 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC79A8012B2FE878006F1EB9 /* AppTheme.swift */; };
 		CCFF6B652B3BA7BD00FFE344 /* QueryProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF6B642B3BA7BD00FFE344 /* QueryProcessingService.swift */; };
@@ -93,6 +96,9 @@
 		CC59DB672B2517D4008AFC2F /* RunRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRequest.swift; sourceTree = "<group>"; };
 		CC59DB692B251A4E008AFC2F /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
 		CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechService.swift; sourceTree = "<group>"; };
+		CC7050BE2B4E70A3009F10D5 /* ArchitecturalDesign.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ArchitecturalDesign.md; path = SpeakNote/GithubFiles/ArchitecturalDesign.md; sourceTree = SOURCE_ROOT; };
+		CC7050BF2B4E70A3009F10D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SpeakNote/GithubFiles/README.md; sourceTree = SOURCE_ROOT; };
+		CC7050C02B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = OPENAI_Assistants_For_SpeakNote.py; path = SpeakNote/GithubFiles/OPENAI_Assistants_For_SpeakNote.py; sourceTree = SOURCE_ROOT; };
 		CC79A8012B2FE878006F1EB9 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		CCFF6B642B3BA7BD00FFE344 /* QueryProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryProcessingService.swift; sourceTree = "<group>"; };
 		CCFF6B662B3BA7F000FFE344 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
@@ -160,15 +166,13 @@
 			isa = PBXGroup;
 			children = (
 				CC45E3352B4E6CB400C5B6E9 /* Application */,
-				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
-				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
+				CC7050C52B4E7176009F10D5 /* Views */,
 				CC2F768A2B184C9D00C27D1A /* Services */,
 				CC59DB512B1A9DC1008AFC2F /* Networking */,
-				CC17DC302B1539AB0084679B /* Main.storyboard */,
 				CC45E3332B4E6BCB00C5B6E9 /* Resources */,
-				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
 				CC45E3342B4E6C6C00C5B6E9 /* Supporting Files */,
 				CC17DC382B1539AB0084679B /* Info.plist */,
+				CC7050C42B4E70E3009F10D5 /* GithubFiles */,
 			);
 			path = SpeakNote;
 			sourceTree = "<group>";
@@ -233,6 +237,7 @@
 		CC45E3342B4E6C6C00C5B6E9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -272,6 +277,42 @@
 				CC59DB692B251A4E008AFC2F /* MessageRequest.swift */,
 			);
 			path = OPENAIAssistant;
+			sourceTree = "<group>";
+		};
+		CC7050C42B4E70E3009F10D5 /* GithubFiles */ = {
+			isa = PBXGroup;
+			children = (
+				CC7050BE2B4E70A3009F10D5 /* ArchitecturalDesign.md */,
+				CC7050C02B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py */,
+				CC7050BF2B4E70A3009F10D5 /* README.md */,
+			);
+			path = GithubFiles;
+			sourceTree = "<group>";
+		};
+		CC7050C52B4E7176009F10D5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CC7050C62B4E7194009F10D5 /* MainView */,
+				CC7050C72B4E71A5009F10D5 /* DebugView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CC7050C62B4E7194009F10D5 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				CC17DC302B1539AB0084679B /* Main.storyboard */,
+				CC17DC5A2B154B460084679B /* SpeechViewModel.swift */,
+				CC17DC2E2B1539AB0084679B /* MainViewController.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		CC7050C72B4E71A5009F10D5 /* DebugView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DebugView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,9 +442,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC7050C22B4E70A3009F10D5 /* README.md in Resources */,
+				CC7050C32B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py in Resources */,
 				CC59DB4E2B1A96A5008AFC2F /* Config.xcconfig in Resources */,
 				CC17DC372B1539AB0084679B /* LaunchScreen.storyboard in Resources */,
 				CC17DC342B1539AB0084679B /* Assets.xcassets in Resources */,
+				CC7050C12B4E70A3009F10D5 /* ArchitecturalDesign.md in Resources */,
 				CC17DC322B1539AB0084679B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
