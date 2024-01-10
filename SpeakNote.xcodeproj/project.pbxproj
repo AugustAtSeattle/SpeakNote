@@ -96,9 +96,9 @@
 		CC59DB672B2517D4008AFC2F /* RunRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRequest.swift; sourceTree = "<group>"; };
 		CC59DB692B251A4E008AFC2F /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
 		CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechService.swift; sourceTree = "<group>"; };
-		CC7050BE2B4E70A3009F10D5 /* ArchitecturalDesign.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ArchitecturalDesign.md; path = SpeakNote/GithubFiles/ArchitecturalDesign.md; sourceTree = SOURCE_ROOT; };
-		CC7050BF2B4E70A3009F10D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SpeakNote/GithubFiles/README.md; sourceTree = SOURCE_ROOT; };
-		CC7050C02B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = OPENAI_Assistants_For_SpeakNote.py; path = SpeakNote/GithubFiles/OPENAI_Assistants_For_SpeakNote.py; sourceTree = SOURCE_ROOT; };
+		CC7050BE2B4E70A3009F10D5 /* ArchitecturalDesign.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ArchitecturalDesign.md; sourceTree = SOURCE_ROOT; };
+		CC7050BF2B4E70A3009F10D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		CC7050C02B4E70A3009F10D5 /* OPENAI_Assistants_For_SpeakNote.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = OPENAI_Assistants_For_SpeakNote.py; sourceTree = SOURCE_ROOT; };
 		CC79A8012B2FE878006F1EB9 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		CCFF6B642B3BA7BD00FFE344 /* QueryProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryProcessingService.swift; sourceTree = "<group>"; };
 		CCFF6B662B3BA7F000FFE344 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
