@@ -166,8 +166,7 @@
 				CC2F768A2B184C9D00C27D1A /* Services */,
 				CC59DB512B1A9DC1008AFC2F /* Networking */,
 				CC17DC302B1539AB0084679B /* Main.storyboard */,
-				CC79A8012B2FE878006F1EB9 /* AppTheme.swift */,
-				CC17DC332B1539AB0084679B /* Assets.xcassets */,
+				CC45E3332B4E6BCB00C5B6E9 /* Resources */,
 				CC17DC352B1539AB0084679B /* LaunchScreen.storyboard */,
 				CC17DC382B1539AB0084679B /* Info.plist */,
 			);
@@ -220,6 +219,15 @@
 				CC59DB6B2B293A15008AFC2F /* AppleSpeechService.swift */,
 			);
 			path = SpeechServices;
+			sourceTree = "<group>";
+		};
+		CC45E3332B4E6BCB00C5B6E9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CC79A8012B2FE878006F1EB9 /* AppTheme.swift */,
+				CC17DC332B1539AB0084679B /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		CC59DB392B1A77C6008AFC2F /* Frameworks */ = {
