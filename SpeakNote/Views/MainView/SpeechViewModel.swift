@@ -25,11 +25,11 @@ struct MessageViewModel: MessageType {
 
 class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     private let disposeBag = DisposeBag()
-    private let speechManager = SpeechRecognitionManager()
-    
-    private let appleSpeechService = AppleSpeechService()
-    private let permissionManager = PermissionManager()
-    private let queryProcessingService = QueryProcessingService()
+    // Dependencies
+    private var speechRecognitionManager: SpeechRecognitionService
+    private let appleSpeechService: AppleSpeechServiceProtocol
+    private let permissionManager: PermissionManagerProtocol
+    private let queryProcessingService: QueryProcessingServiceProtocol
     
     // Inputs
     // let toggleListening: AnyObserver<Void>
@@ -59,26 +59,30 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
         case noTranscribedText
     }
     
-    override init() {
+    init(
+        speechRecognitionManager: SpeechRecognitionService,
+        appleSpeechService: AppleSpeechServiceProtocol,
+        permissionManager: PermissionManagerProtocol,
+        queryProcessingService: QueryProcessingServiceProtocol
+    ) {
+        self.speechRecognitionManager = speechRecognitionManager
+        self.appleSpeechService = appleSpeechService
+        self.permissionManager = permissionManager
+        self.queryProcessingService = queryProcessingService
         super.init()
         setupSpeechManager()
-        //        loadMessages()
     }
-    
-    private func setupSpeechManager() {
         
-        // Set up the callback for speech recognition results
-        speechManager.onResult = { [weak self] result in
+    private func setupSpeechManager() {
+        speechRecognitionManager.onResult = { [weak self] result in
             self?.transcribedText.accept(result)
         }
         
-        // Set up the callback for error handling
-        speechManager.onError = { [weak self] error in
+        speechRecognitionManager.onError = { [weak self] error in
             self?.errorRelay.accept(error)
         }
         
-        // Set up the callback for listening status changes
-        speechManager.onListeningStatusChanged = { [weak self] isListening in
+        speechRecognitionManager.onListeningStatusChanged = { [weak self] isListening in
             self?.isListeningRelay.accept(isListening)
         }
     }
@@ -105,15 +109,14 @@ class SpeechViewModel: NSObject, SFSpeechRecognizerDelegate {
     }
     
     func startListening() {
-        speechManager.startRecognition()
+        speechRecognitionManager.startRecognition()
     }
-    
     
     func stopListening() {
         Task {
             await performQuery()
         }
-        speechManager.stopRecognition()
+        speechRecognitionManager.stopRecognition()
     }
     
     
@@ -139,7 +142,7 @@ extension SpeechViewModel {
         }
         return transcribedText.value
     }
-
+    
     func updateUIWithNewMessage(_ messageContent: String) {
         let message: MessageType = MessageViewModel(sender: SenderViewModel(senderId: "user", displayName: "User"), messageId: UUID().uuidString, sentDate: Date(), kind: .text(messageContent))
         var currentMessages = messages.value
@@ -148,7 +151,7 @@ extension SpeechViewModel {
         
         isLoadingFromServerRelay.accept(true)
     }
-
+    
     
     private func presentResult(_ description: String)  {
         appleSpeechService.speak(text: description)

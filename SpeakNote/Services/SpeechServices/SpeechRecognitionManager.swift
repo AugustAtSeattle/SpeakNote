@@ -21,7 +21,7 @@ protocol SpeechRecognitionService {
     func stopRecognition()
 }
 
-class SpeechRecognitionManager {
+class SpeechRecognitionManager: SpeechRecognitionService {
     private var services: [SpeechRecognitionService] = []
     private var activeService: SpeechRecognitionService?
 
@@ -29,7 +29,7 @@ class SpeechRecognitionManager {
         services.append(WhisperRecognitionService())
         services.append(AppleSpeechRecognitionService())
         // Add more services as needed
-
+        
         // Set the default or preferred service
         setActiveService(serviceType: .apple)
     }

@@ -26,7 +26,11 @@ class MainViewController: MessagesViewController {
     let audioWaveLayer = CAShapeLayer()
     let buttonSize: CGFloat = 120
     let micButton = UIButton()
-    let viewModel = SpeechViewModel()
+    
+    let viewModel = SpeechViewModel(speechRecognitionManager: SpeechRecognitionManager(),
+                                    appleSpeechService: AppleSpeechService(),
+                                    permissionManager: PermissionManager(),
+                                    queryProcessingService: QueryProcessingService())
     
     override func viewDidLoad() {
         super.viewDidLoad()
