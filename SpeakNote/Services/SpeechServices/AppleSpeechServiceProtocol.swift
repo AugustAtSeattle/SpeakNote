@@ -8,11 +8,11 @@
 import Foundation
 import AVFoundation
 
-protocol SpeechService {
+protocol AppleSpeechServiceProtocol {
     func speak(text: String)
 }
 
-class AppleSpeechService: SpeechService {
+class AppleSpeechService: AppleSpeechServiceProtocol {
     private let speechSynthesizer = AVSpeechSynthesizer()
 
     func speak(text: String) {

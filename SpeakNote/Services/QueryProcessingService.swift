@@ -7,8 +7,11 @@
 
 import Foundation
 
+protocol QueryProcessingServiceProtocol {
+    func processQuery(_ userQuery: String) async throws -> String
+}
 
-class QueryProcessingService {
+class QueryProcessingService: QueryProcessingServiceProtocol {
     private let assistant = AssistantClient()
     private let databaseManager = DatabaseManager.shared
     

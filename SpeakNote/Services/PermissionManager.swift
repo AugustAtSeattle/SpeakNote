@@ -8,7 +8,14 @@
 import Foundation
 import Speech
 
-class PermissionManager {
+protocol PermissionManagerProtocol {
+    func checkAndRequestPermissions() async -> Bool
+    func requestSpeechAndMicrophonePermissions() async -> Bool
+    func requestMicrophonePermission() async -> Bool
+    func requestSpeechRecognitionPermission() async -> Bool
+}
+
+class PermissionManager: PermissionManagerProtocol {
     func checkAndRequestPermissions() async -> Bool {
         let speechRecognizerAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
         let microphoneAuthorized = AVAudioSession.sharedInstance().recordPermission == .granted
