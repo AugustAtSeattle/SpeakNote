@@ -156,7 +156,6 @@ class MainViewController: MessagesViewController {
     }
     
     func trimmedCaptionText(for text: String) -> String {
-        print(text)
         let words = text.components(separatedBy: " ").reversed()
         var result = ""
         var temporaryResult = ""
@@ -170,14 +169,12 @@ class MainViewController: MessagesViewController {
             let size = (temporaryResult as NSString).size(withAttributes: attributes)
             
             // Only add the word to the result if it fits
-            print(word, size.width, maxWidth)
             if size.width < maxWidth {
                 result = temporaryResult
             } else {
                 break
             }
         }
-        print(result)
         return result
     }
     
