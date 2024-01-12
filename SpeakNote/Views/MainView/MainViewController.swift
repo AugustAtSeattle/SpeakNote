@@ -118,8 +118,11 @@ class MainViewController: MessagesViewController {
             .bind(onNext: viewModel.toggleListening)
             .disposed(by: disposeBag)
         
-        viewModel.transcribedText.asObservable()
-            .bind(to: liveCaptionView.rx.text)
+        viewModel.transcribedText
+            .map { [weak self] text -> String in
+                guard let self = self else { return "" }
+                return self.trimmedCaptionText(for: text)
+            }.bind(to: liveCaptionView.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.isListeningRelay
@@ -150,6 +153,32 @@ class MainViewController: MessagesViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    func trimmedCaptionText(for text: String) -> String {
+        print(text)
+        let words = text.components(separatedBy: " ").reversed()
+        var result = ""
+        var temporaryResult = ""
+        let maxWidth: CGFloat = (UIScreen.main.bounds.width - AppLayout.leadingConstant * 2) * 1.8
+        // 2 lines
+        let attributes = [NSAttributedString.Key.font: liveCaptionView.font!] as [NSAttributedString.Key: Any]
+
+        for word in words {
+            // Add the word to a temporary string to check size
+            temporaryResult = result.isEmpty ? word : "\(word) \(result)"
+            let size = (temporaryResult as NSString).size(withAttributes: attributes)
+            
+            // Only add the word to the result if it fits
+            print(word, size.width, maxWidth)
+            if size.width < maxWidth {
+                result = temporaryResult
+            } else {
+                break
+            }
+        }
+        print(result)
+        return result
     }
     
     func animateMicButton(isListening: Bool) {

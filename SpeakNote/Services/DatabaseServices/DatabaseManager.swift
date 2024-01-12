@@ -46,7 +46,7 @@ class DatabaseManager {
 
             // Create a connection to the database
             connection = try Connection(fileURL.path)
-            try connection?.run(notesTable.drop(ifExists: true))
+//            try connection?.run(notesTable.drop(ifExists: true))
 
             // Create the notes table if it doesn't exist
             try connection?.run(notesTable.create(ifNotExists: true) { t in
